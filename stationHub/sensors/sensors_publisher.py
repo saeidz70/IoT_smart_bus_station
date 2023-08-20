@@ -18,7 +18,6 @@ class SensorPublisher:
         self.passenger_IN_topic = self.base_topic + "sensor/passengerIn"
         self.passenger_OUT_topic = self.base_topic + "sensor/passengerOut"
         self.motion_topic = self.base_topic + "sensor/motion"
-        self.led_status = "off"
 
     def start(self):
         self.client.start()
