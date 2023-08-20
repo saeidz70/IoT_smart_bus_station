@@ -1,0 +1,3 @@
+# IoT_smart_bus_station
+
+The suggested IoT platform intends to make the bus stop smart. The bus stop will be equipped with temperature, motion, ToF, and humidity sensors. Temperature and humidity sensors will control the situation and act as needed. The motion sensor will be turning the lights and air conditioner on when it detects people in the bus station. In addition, using ToF sensor, the number of passengers can be counted. To operate the smart bus station, the platform as a whole provides unified interfaces (through REST and MQTT). Finally, the platform delivers detailed information about passengers and the bus station's situation.
