@@ -1,7 +1,4 @@
 import random
-
-import requests
-
 from mqtt.MyMQTT import *
 import time
 import json
@@ -43,35 +40,22 @@ class SensorPublisher:
             passenger_out_payload = self.create_sensor_payload("passenger_out", "d", passenger_out)
             motion_payload = self.create_sensor_payload("crowd", "d", motion)
 
+
             self.client.myPublish(self.temperature_topic, temperature_payload)
             print(self.temperature_topic, temperature_payload)
-            requests.get(("https://api.thingspeak.com/update?api_key=PWKBSNME0EGGKW9Y&field1=" + str(temperature)),
-                         verify=False)
-            time.sleep(1)  # Publish temperature every 5 seconds
-
+            time.sleep(5)  # Publish temperature every 30 seconds
             self.client.myPublish(self.humidity_topic, humidity_payload)
             print(self.humidity_topic, humidity_payload)
-            requests.get(("https://api.thingspeak.com/update?api_key=PWKBSNME0EGGKW9Y&field2=" + str(humidity)),
-                         verify=False)
-            time.sleep(1)  # Publish humidity every 5 seconds
-
+            time.sleep(5)  # Publish humidity every 60 seconds
             self.client.myPublish(self.passenger_IN_topic, passenger_in_payload)
             print(self.passenger_IN_topic, passenger_in_payload)
-            requests.get(("https://api.thingspeak.com/update?api_key=PWKBSNME0EGGKW9Y&field4=" + str(passenger_in)),
-                         verify=False)
-            time.sleep(1)  # Publish humidity every 5 seconds
-
+            time.sleep(5)  # Publish humidity every 60 seconds
             self.client.myPublish(self.passenger_OUT_topic, passenger_out_payload)
             print(self.passenger_OUT_topic, passenger_out_payload)
-            requests.get(("https://api.thingspeak.com/update?api_key=PWKBSNME0EGGKW9Y&field5=" + str(temperature)),
-                         verify=False)
-            time.sleep(1)  # Publish humidity every 5 seconds
-
+            time.sleep(5)  # Publish humidity every 60 seconds
             self.client.myPublish(self.motion_topic, motion_payload)
             print(self.motion_topic, motion_payload)
-            requests.get(("https://api.thingspeak.com/update?api_key=PWKBSNME0EGGKW9Y&field3=" + str(motion)),
-                         verify=False)
-            time.sleep(1)  # Publish temperature every 5 seconds
+            time.sleep(5)  # Publish temperature every 30 seconds
 
             print("Published sensor data at", datetime.now())
 
@@ -100,4 +84,4 @@ if __name__ == "__main__":
     topic = conf["topic"]
     SensorPublisher = SensorPublisher(clientID, topic, broker, port)
     SensorPublisher.start()
-    time.sleep(1)
+    time.sleep(5)
