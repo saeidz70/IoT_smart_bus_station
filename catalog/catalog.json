@@ -1,0 +1,24 @@
+{
+    "services": {
+        "REST": [
+
+        ],
+        "MQTT": [
+            {
+                "service_id": "publisher",
+                "client_id": "statusPublisher",
+                "broker": "mqtt.eclipseprojects.io",
+                "port": 1883,
+                "topic": "IoT/smartStation/"
+            },
+            {
+                "service_id": "subscriber",
+                "client_id": "statusSubscriber",
+                "broker": "mqtt.eclipseprojects.io",
+                "port": 1883,
+                "topic": "IoT/smartStation/"
+            }
+        ]
+
+    }
+}
