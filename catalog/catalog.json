@@ -1,8 +1,6 @@
 {
     "services": {
-        "REST": [
-
-        ],
+        "REST": [],
         "MQTT": [
             {
                 "service_id": "publisher",
@@ -19,6 +17,11 @@
                 "topic": "IoT/smartStation/"
             }
         ]
-
-    }
+    },
+    "sensors": {
+        "humidity": {"sName": "humidity_sens", "status": "on" },
+        "temperature": {"sName": "temperature_sens", "status": "on" }
+    },
+    "threshold": {"humidity": 25, "temperature": 21},
+    "telegram_token": "6604931438:AAFQtXjW60brIofOhH0zUQKcMZDZByTgiQ0"
 }
