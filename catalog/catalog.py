@@ -107,6 +107,10 @@ class CatalogAPI:
     def telegram_token(self):
         return {"telegram_token": self.catalog.get("telegram_token", "")}
 
+# TODO: update device status
+# TODO: show each device status separately
+
+
 
 if __name__ == "__main__":
     conf = {
