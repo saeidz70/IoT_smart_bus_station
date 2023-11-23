@@ -1,6 +1,9 @@
 {
     "services": {
-        "REST": [],
+        "REST": {
+            "service_id": "actuator_server",
+            "uri": "http://127.0.0.1:9090/"
+        },
         "MQTT": [
             {
                 "service_id": "publisher",
@@ -18,10 +21,8 @@
             }
         ]
     },
-    "sensors": {
-        "humidity": {"sName": "humidity_sens", "status": "on" },
-        "temperature": {"sName": "temperature_sens", "status": "on" }
-    },
-    "threshold": {"humidity": 25, "temperature": 21},
+    "sensors": ["humidity_sensor", "temperature_sensor", "motion_sensor", "passenger_IN_sensor", "passenger_OUT_sensor"],
+    "device_status": {"cooler": "off", "heater": "off", "dehumidifier": "off", "light": "off"},
+    "threshold": {"humidity": 25, "temperature_cold": 19, "temperature_hot": 27},
     "telegram_token": "6604931438:AAFQtXjW60brIofOhH0zUQKcMZDZByTgiQ0"
 }

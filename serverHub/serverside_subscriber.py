@@ -1,6 +1,9 @@
-from mqtt.MyMQTT import MyMQTT  # Import MyMQTT class explicitly
+import requests
+from mqtt.MyMQTT import MyMQTT
 import time
 import json
+
+global_sensor_data = {}
 
 
 class SensorsSubscriber:
@@ -37,34 +40,52 @@ class SensorsSubscriber:
         data = json.loads(json.loads(message))
 
         # Use elif for all conditions
+        global global_sensor_data
         if topic == self.temperature_topic:
             self.temperature = data["e"][0]["value"]
+            global_sensor_data["temperature"] = self.temperature
             print("Received temperature:", self.temperature)
         elif topic == self.humidity_topic:
             self.humidity = data["e"][0]["value"]
+            global_sensor_data["humidity"] = self.humidity
             print("Received humidity:", self.humidity)
         elif topic == self.passenger_IN_topic:
             self.passenger_IN = data["e"][0]["value"]
+            global_sensor_data["passenger_IN"] = self.passenger_IN
             print("Received passenger IN:", self.passenger_IN)
         elif topic == self.passenger_OUT_topic:
             self.passenger_OUT = data["e"][0]["value"]
+            global_sensor_data["passenger_OUT"] = self.passenger_OUT
             print("Received passenger OUT:", self.passenger_OUT)
         elif topic == self.motion_topic:
             self.motion = data["e"][0]["value"]
+            global_sensor_data["motion"] = self.motion
             print("Received motion:", self.motion)
+
+            return global_sensor_data
+
+
+    def put(self, uri, body):
+        body = json.dumps(body)
+        response = requests.put(uri, data=body)
+        return f'''
+        Response code: {response.status_code}\n
+        Response content: {response.text}\n
+        '''
 
 
 if __name__ == "__main__":
     catalog = json.load(open("/Users/saeidzolfaghari/PycharmProjects/smartStation/catalog/catalog.json"))
     conf = catalog["services"]["MQTT"][1]
-
     clientID = conf["client_id"]
     broker = conf["broker"]
     port = conf["port"]
     topic = conf["topic"]
 
-    sensors_subscriber = SensorsSubscriber(clientID, topic, broker, port)  # Use lowercase for variable names
+    sensors_subscriber = SensorsSubscriber(clientID, topic, broker, port)
     sensors_subscriber.run()
 
+
     while True:
+        print(global_sensor_data)
         time.sleep(1)
