@@ -74,6 +74,8 @@ class TelegramBot:
     def start(self):
         self.bot.polling()
 
+# TODO: set threshold by telegram bot
+# TODO: show information to user in a friendly manner
 
 if __name__ == "__main__":
     try:
