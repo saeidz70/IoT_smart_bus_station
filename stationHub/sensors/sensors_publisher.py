@@ -77,7 +77,6 @@ class SensorPublisher:
 if __name__ == "__main__":
     catalog = json.load(open("../../catalog/catalog.json"))
     conf = catalog["services"]["MQTT"][0]
-    print(conf)
     clientID = conf["client_id"]
     broker = conf["broker"]
     port = conf["port"]
