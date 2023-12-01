@@ -1,8 +1,8 @@
 import time
-
 import telebot
 import requests
 import json
+import telegram
 
 
 class TelegramBot:
@@ -73,7 +73,7 @@ class TelegramBot:
 
         @self.bot.message_handler(func=lambda message: message.text == 'Thresholds')
         def handle_thresholds(message):
-            thresholds_data = self.get_catalog_data('threshold')
+            thresholds_data = self.get_catalog_data('stations/station_1/threshold')
             if thresholds_data:
                 humidity = thresholds_data["humidity"]
                 print(humidity)
@@ -108,7 +108,19 @@ class TelegramBot:
 
         @self.bot.message_handler(func=lambda message: message.text == 'Humidity')
         def change_humidity(message):
-            pass
+            self.bot.send_chat_action(message.chat.id, "typing")
+            # self.bot.reply_to(message, "hello")
+
+            self.bot.send_message(message.chat.id, "Please type the new threshold:", reply_markup=telebot.types.ForceReply())
+
+        @self.bot.message_handler(func=lambda message: True, content_types=['text'])
+        def handle_message(message):
+            if message.reply_to_message:
+                new_threshold = message.text
+
+
+                self.bot.send_message(message.chat.id, f"New threshold saved as: {new_threshold}")
+
         #TODO: change the threshold
 
                 # self.bot.send_message(message.chat.id, f"Services:\n{json.dumps(services_data, indent=2)}")

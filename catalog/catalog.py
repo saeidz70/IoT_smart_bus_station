@@ -23,20 +23,90 @@ class CatalogAPI:
 
     @cherrypy.tools.json_out()
     def GET(self, *uri):
-        if len(uri) == 0:
+        if not uri:
             return self.catalog
-        elif len(uri) == 1:
-            field = uri[0]
-            if field in self.catalog:
-                return self.catalog[field]
-        elif len(uri) == 2:
-            field = uri[0]
-            key = uri[1]
-            if field in self.catalog:
-                subfield = self.catalog[field]
-                if key in subfield:
-                    return subfield[key]
-        raise cherrypy.HTTPError(400, "Wrong URI")
+
+        elif len(uri) == 1 and uri[0] == "projectOwner":
+            return self.catalog.get("projectOwner", "")
+        elif len(uri) == 1 and uri[0] == "projectName":
+            return self.catalog.get("projectName", "")
+        elif len(uri) == 1 and uri[0] == "lastUpdate":
+            return self.catalog.get("lastUpdate", "")
+
+        elif len(uri) == 1 and uri[0] == "settings":
+            return self.catalog.get("settings", {})
+        elif len(uri) == 3 and uri[0] == "settings" and uri[1] == "services":
+            service_type = uri[2]
+            return self.catalog.get("settings", {}).get("services", {}).get(service_type, {})
+        elif len(uri) == 2 and uri[0] == "settings":
+            setting_item = uri[1]
+            return self.catalog.get("settings", {}).get(setting_item, {})
+
+        # "http://127.0.0.1:8080/stations/station_1/sensors/temperature/sensor_topic"
+        elif len(uri) == 1 and uri[0] == "stations":
+            return self.station_list()
+
+        elif len(uri) == 2 and uri[0] == "stations":
+            station_name = uri[1]
+            return {
+                "sensors": self.sensors(station_name),
+                "device_status": self.device_status(station_name),
+                "threshold": self.threshold(station_name)
+            }
+        elif len(uri) == 3 and uri[0] == "stations":
+            if uri[2] == "sensors":
+                station_name = uri[1]
+                return self.sensors(station_name)
+            elif uri[2] == "device_status":
+                station_name = uri[1]
+                return self.device_status(station_name)
+            elif uri[2] == "threshold":
+                station_name = uri[1]
+                return self.threshold(station_name)
+
+        elif len(uri) == 4 and uri[0] == "stations":
+            if uri[2] == "sensors" and uri[3] == "temperature":
+                station_name = uri[1]
+                return self.sensors(station_name)["temperature"]
+
+            elif uri[2] == "sensors" and uri[3] == "humidity":
+                station_name = uri[1]
+                return self.sensors(station_name)["humidity"]
+
+            elif uri[2] == "sensors" and uri[3] == "motion":
+                station_name = uri[1]
+                return self.sensors(station_name)["motion"]
+
+            elif uri[2] == "sensors" and uri[3] == "passenger_IN":
+                station_name = uri[1]
+                return self.sensors(station_name)["passenger_IN"]
+
+            elif uri[2] == "sensors" and uri[3] == "passenger_OUT":
+                station_name = uri[1]
+                return self.sensors(station_name)["passenger_OUT"]
+
+
+        elif len(uri) == 5 and uri[0] == "stations":
+
+            if uri[2] == "sensors" and uri[3] == "temperature":
+                if uri[4] == "sensor_name":
+                    station_name = uri[1]
+                    return self.sensors(station_name)["temperature"][0]["sensor_name"]
+
+                elif uri[4] == "sensor_id":
+                    station_name = uri[1]
+                    return self.sensors(station_name)["temperature"][0]["sensor_id"]
+
+                elif uri[4] == "unit":
+                    station_name = uri[1]
+                    return self.sensors(station_name)["temperature"][0]["unit"]
+
+                elif uri[4] == "sensor_topic":
+                    station_name = uri[1]
+                    return self.sensors(station_name)["temperature"][0]["sensor_topic"]
+
+        else:
+            raise cherrypy.HTTPError(400, "Wrong URI")
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
@@ -55,19 +125,41 @@ class CatalogAPI:
         else:
             raise cherrypy.HTTPError(400, "Bad Request")
 
+    # @cherrypy.tools.json_in()
+    # @cherrypy.tools.json_out()
+    # def PUT(self, *uri):
+    #     if len(uri) == 2 and uri[0] == "update_service":
+    #         service_type = uri[1]
+    #         data = cherrypy.request.body.read()
+    #         data = json.loads(data)
+    #         services = self.catalog.get("settings", {}).get("services", {}).get(service_type)
+    #         if services is not None:
+    #             services.update(data)
+    #             self.save_catalog()
+    #             return {"message": "Service updated successfully"}
+    #         raise cherrypy.HTTPError(404, "Service not found")
+    #     else:
+    #         raise cherrypy.HTTPError(400, "Wrong URI")
+
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def PUT(self, *uri):
-        if len(uri) == 2 and uri[0] == "update_service":
-            service_type = uri[1]
+        if len(uri) == 2 and uri[0] == "update_threshold":
+            station_name = uri[1]
             data = cherrypy.request.body.read()
             data = json.loads(data)
-            services = self.catalog.get("settings", {}).get("services", {}).get(service_type)
-            if services is not None:
-                services.update(data)
-                self.save_catalog()
-                return {"message": "Service updated successfully"}
-            raise cherrypy.HTTPError(404, "Service not found")
+
+            for station in self.catalog.get("stations", []):
+                if station_name in station:
+                    if "threshold" in station[station_name]:
+                        station[station_name]["threshold"]["humidity"] = data.get("humidity", 25)
+                        self.save_catalog()
+                        return {"message": f"Threshold for humidity updated successfully for {station_name}"}
+                    else:
+                        raise cherrypy.HTTPError(400, "Threshold not found for the specified station")
+
+            raise cherrypy.HTTPError(404, f"Station {station_name} not found")
+
         else:
             raise cherrypy.HTTPError(400, "Wrong URI")
 
