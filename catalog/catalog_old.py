@@ -43,13 +43,13 @@ class CatalogAPI:
     def POST(self):
         body = cherrypy.request.body.read()
         json_body = json.loads(body)
+        service_type = json_body.get("service_type")
+        service_info = json_body.get("service_info")
 
-        if "settings" in json_body and "services" in json_body["settings"]:
-            service_type = list(json_body["settings"]["services"].keys())[0]
-            service_info = json_body["settings"]["services"][service_type]
-            if service_type not in self.catalog.get("settings", {}).get("services", {}):
-                self.catalog["settings"]["services"][service_type] = {}
-            self.catalog["settings"]["services"][service_type] = service_info
+        if service_type and service_info:
+            if service_type not in self.catalog.get("services", {}):
+                self.catalog["services"][service_type] = []
+            self.catalog["services"][service_type].append(service_info)
             self.save_catalog()
             return {"message": "Service added successfully"}
         else:
@@ -60,13 +60,16 @@ class CatalogAPI:
     def PUT(self, *uri):
         if len(uri) == 2 and uri[0] == "update_service":
             service_type = uri[1]
+            service_id = cherrypy.request.params.get("service_id")
             data = cherrypy.request.body.read()
             data = json.loads(data)
-            services = self.catalog.get("settings", {}).get("services", {}).get(service_type)
+            services = self.catalog.get("services", {}).get(service_type)
             if services is not None:
-                services.update(data)
-                self.save_catalog()
-                return {"message": "Service updated successfully"}
+                for service in services:
+                    if service.get("service_id") == service_id:
+                        service.update(data)
+                        self.save_catalog()
+                        return {"message": "Service updated successfully"}
             raise cherrypy.HTTPError(404, "Service not found")
         else:
             raise cherrypy.HTTPError(400, "Wrong URI")
@@ -76,45 +79,41 @@ class CatalogAPI:
     def DELETE(self, *uri):
         if len(uri) == 2 and uri[0] == "delete_service":
             service_type = uri[1]
-            services = self.catalog.get("settings", {}).get("services", {}).get(service_type)
+            service_id = cherrypy.request.params.get("service_id")
+            services = self.catalog.get("services", {}).get(service_type)
             if services is not None:
-                del self.catalog["settings"]["services"][service_type]
+                services[:] = [service for service in services if service.get("service_id") != service_id]
                 self.save_catalog()
                 return {"message": "Service deleted successfully"}
             raise cherrypy.HTTPError(404, "Service not found")
 
     @cherrypy.tools.json_out()
-    def sensors(self, station_name):
-        for station in self.catalog.get("stations", []):
-            if station_name in station:
-                return station[station_name]["sensors"]
-        raise cherrypy.HTTPError(404, "Station not found")
+    def sensors(self, sensor_type):
+        if sensor_type in self.catalog.get("sensors", {}):
+            return self.catalog["sensors"][sensor_type]
+        raise cherrypy.HTTPError(404, "Sensor not found")
 
     @cherrypy.tools.json_out()
-    def device_status(self, station_name):
-        for station in self.catalog.get("stations", []):
-            if station_name in station:
-                return station[station_name]["device_status"]
-        raise cherrypy.HTTPError(404, "Station not found")
+    def services(self, service_type):
+        if service_type in self.catalog.get("services", {}):
+            return self.catalog["services"][service_type]
+        raise cherrypy.HTTPError(404, "Service not found")
 
     @cherrypy.tools.json_out()
-    def threshold(self, station_name):
-        for station in self.catalog.get("stations", []):
-            if station_name in station:
-                return station[station_name]["threshold"]
-        raise cherrypy.HTTPError(404, "Station not found")
+    def threshold(self):
+        return self.catalog.get("threshold", {})
 
     @cherrypy.tools.json_out()
-    def station_list(self):
-        return [station for station in self.catalog.get("stations", [])]
+    def telegram_token(self):
+        return {"telegram_token": self.catalog.get("telegram_token", "")}
 
     @cherrypy.tools.json_out()
-    def project_info(self):
-        return {
-            "projectOwner": self.catalog.get("projectOwner", ""),
-            "projectName": self.catalog.get("projectName", ""),
-            "lastUpdate": self.catalog.get("lastUpdate", "")
-        }
+    def telegram_authority(self):
+        return {"telegram_authority": self.catalog.get("telegram_authority", "")}
+
+# TODO: update device status
+# TODO: show each device status separately
+
 
 
 if __name__ == "__main__":

@@ -1,24 +1,138 @@
 {
-    "services": {
-        "REST": [
+    "projectOwner":"Group3",
+    "projectName":"SmartBusStation",
+    "lastUpdate":"2023-12-01 12:28",
 
-        ],
-        "MQTT": [
-            {
-                "service_id": "publisher",
-                "client_id": "statusPublisher",
-                "broker": "mqtt.eclipseprojects.io",
-                "port": 1883,
-                "topic": "IoT/smartStation/"
+    "settings": {
+        "telegram_token": "6604931438:AAFQtXjW60brIofOhH0zUQKcMZDZByTgiQ0",
+        "telegram_authority": ["ali", "saeid", "masumeh"],
+        "services": {
+            "REST": {
+                "service_id": "actuator_server",
+                "uri": "http://127.0.0.1:9090/"
             },
-            {
-                "service_id": "subscriber",
-                "client_id": "statusSubscriber",
-                "broker": "mqtt.eclipseprojects.io",
-                "port": 1883,
-                "topic": "IoT/smartStation/"
+            "MQTT": {
+                "publishers":
+                    {
+                        "service_name": "publisher_name_1",
+                        "client_id": "statusPublisher",
+                        "broker": "mqtt.eclipseprojects.io",
+                        "port": 1883
+                    },
+                "subscribers":
+                    {
+                        "service_name": "subscriber_name_1",
+                        "client_id": "statusSubscriber",
+                        "broker": "mqtt.eclipseprojects.io",
+                        "port": 1883
+                    }
+            }
+        }
+    },
+    "stations": [
+            {"station_1": {
+                "sensors": {
+                    "temperature": [{
+                        "sensor_name": "temperature_sensor_s1_1",
+                        "sensor_id": "temp_sen_id_s1_1",
+                        "unit": "cel",
+                        "sensor_topic": "smartStation/station_1/temperature/temperature_sensor_s1_1",
+                        "last_update":"2023-12-01 12:28"
+                    }],
+                    "humidity": [{
+                        "sensor_name": "humidity_sensor_s1_1",
+                        "sensor_id": "humid_sen_id_s1_1",
+                        "unit": "%",
+                        "sensor_topic": "smartStation/station_1/humidity/humidity_sensor_s1_1",
+                        "last_update":"2023-12-01 12:28"
+                    }],
+                    "motion": [{
+                        "sensor_name": "motion_sensor_s1_1",
+                        "sensor_id": "motion_sen_id_s1_1",
+                        "unit": "bol",
+                        "sensor_topic": "smartStation/station_1/motion/motion_sensor_s1_1",
+                        "last_update":"2023-12-01 12:28"
+                    }],
+                    "passenger_IN": [{
+                        "sensor_name": "passenger_IN_sensor_s1_1",
+                        "sensor_id": "pass_IN_sen_id_1",
+                        "unit": "int",
+                        "sensor_topic": "smartStation/station_1/passenger_IN/passenger_IN_sensor_s1_1",
+                        "last_update":"2023-12-01 12:28"
+                    }],
+                    "passenger_OUT": [{
+                        "sensor_name": "passenger_OUT_sensor_s1_1",
+                        "sensor_id": "pass_OUT_sen_id_s1_1",
+                        "unit": "int",
+                        "sensor_topic": "smartStation/station_1/passenger_OUT/passenger_OUT_sensor_s1_1",
+                        "last_update":"2023-12-01 12:28"
+                    }]
+                },
+                "device_status": {
+                    "cooler": "off",
+                    "heater": "off",
+                    "dehumidifier": "off",
+                    "light": "off"
+                },
+                "threshold": {
+                    "humidity": 25,
+                    "temperature_cold": 19,
+                    "temperature_hot": 27
+                }
+            }
+            },
+            {"station_2": {
+                "sensors": {
+                    "temperature": [{
+                        "sensor_name": "temperature_sensor_s2_1",
+                        "sensor_id": "temp_sen_id_s2_1",
+                        "unit": "cel",
+                        "sensor_topic": "smartStation/station_1/temperature/temperature_sensor_s2_1",
+                        "last_update":"2023-12-01 12:28"
+                    }],
+                    "humidity": [{
+                        "sensor_name": "humidity_sensor_s2_1",
+                        "sensor_id": "humid_sen_id_s2_1",
+                        "unit": "%",
+                        "sensor_topic": "smartStation/station_1/humidity/humidity_sensor_s2_1",
+                        "last_update":"2023-12-01 12:28"
+                    }],
+                    "motion": [{
+                        "sensor_name": "motion_sensor_s2_1",
+                        "sensor_id": "motion_sen_id_s2_1",
+                        "unit": "bol",
+                        "sensor_topic": "smartStation/station_1/motion/motion_sensor_s2_1",
+                        "last_update":"2023-12-01 12:28"
+                    }],
+                    "passenger_IN": [{
+                        "sensor_name": "passenger_IN_sensor_s2_1",
+                        "sensor_id": "pass_IN_sen_id_s2_1",
+                        "unit": "int",
+                        "sensor_topic": "smartStation/station_1/passenger_IN/passenger_IN_sensor_s2_1",
+                        "last_update":"2023-12-01 12:28"
+                    }],
+                    "passenger_OUT": [{
+                        "sensor_name": "passenger_OUT_sensor_s2_1",
+                        "sensor_id": "pass_OUT_sen_id_s2_1",
+                        "unit": "int",
+                        "sensor_topic": "smartStation/station_1/passenger_OUT/passenger_OUT_sensor_s2_1",
+                        "last_update":"2023-12-01 12:28"
+                    }]
+                },
+                "device_status": {
+                    "cooler": "off",
+                    "heater": "off",
+                    "dehumidifier": "off",
+                    "light": "off"
+                },
+                "threshold": {
+                    "humidity": 25,
+                    "temperature_cold": 19,
+                    "temperature_hot": 27
+                }
+            }
             }
         ]
 
-    }
 }
+
