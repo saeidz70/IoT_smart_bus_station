@@ -1,22 +1,44 @@
+from datetime import datetime
 import random
+from scipy.stats import truncnorm
 
 
 class HumiditySensor:
-    def __init__(self, mean=40, deviation=3):
-        self.mean = mean
-        self.deviation = deviation
-        self.previous_humidity = None
+    def __init__(self):
+        self.humidity_deviation = 5  # Adjust deviation as needed
+
+    def set_seasonal_limits(self, month):
+        seasons = {
+            1: (30, 60),  # Winter
+            2: (30, 60),  # Winter
+            3: (40, 70),  # Spring
+            4: (40, 70),  # Spring
+            5: (40, 70),  # Spring
+            6: (60, 90),  # Summer
+            7: (60, 90),  # Summer
+            8: (60, 90),  # Summer
+            9: (40, 70),  # Fall
+            10: (40, 70),  # Fall
+            11: (40, 70),  # Fall
+            12: (30, 60)  # Winter
+        }
+        return seasons[month]
 
     def humiditySens(self):
-        if self.previous_humidity is None:
-            humidity_sens = random.gauss(self.mean, self.deviation)
-        else:
-            humidity_sens = random.gauss(
-                (self.previous_humidity + self.mean) / 2,
-                self.deviation / 2
-            )
+        current_time = datetime.now()
+        month = current_time.month
 
-        humidity_sens = max(0, min(100, humidity_sens))  # Ensure humidity_sens stays within 0 to 100
-        humidity_sens = round(humidity_sens * 2) / 2  # Round to nearest 0.5
-        self.previous_humidity = humidity_sens
-        return humidity_sens, print(f"Humidity: {humidity_sens:.1f}%")
+        lower_limit, upper_limit = self.set_seasonal_limits(month)
+
+        # Calculate the parameters for the truncated normal distribution
+        mean = (lower_limit + upper_limit) / 2
+        a = (lower_limit - mean) / self.humidity_deviation
+        b = (upper_limit - mean) / self.humidity_deviation
+
+        distribution = truncnorm(a, b, loc=mean, scale=self.humidity_deviation)
+
+        # Generate humidity based on the truncated normal distribution
+        humidity = int(distribution.rvs())
+
+        print(f"Humidity: {humidity}%")
+        return humidity

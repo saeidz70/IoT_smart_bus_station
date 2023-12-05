@@ -28,10 +28,10 @@ class SensorPublisher:
 
     def publish(self):
         while True:
-            temperature = (TemperatureSensor().temperatureSens())[0]
-            humidity = (HumiditySensor().humiditySens())[0]
-            passenger_in = (PassengerInSensor().passenger_counter())[0]
-            passenger_out = (PassengerOutSensor().passenger_counter())[0]
+            temperature = (TemperatureSensor().temperatureSens())
+            humidity = (HumiditySensor().humiditySens())
+            passenger_in = (PassengerInSensor().passenger_counter())
+            passenger_out = (PassengerOutSensor().passenger_counter())
             motion = random.randint(0, 1)
 
             temperature_payload = self.create_sensor_payload("temperature", "Cel", temperature)
@@ -76,12 +76,12 @@ class SensorPublisher:
 
 if __name__ == "__main__":
     catalog = json.load(open("../../catalog/catalog.json"))
-    conf = catalog["services"]["MQTT"][0]
+    conf = catalog["settings"]["services"]["MQTT"]["publishers"]
     print(conf)
     clientID = conf["client_id"]
     broker = conf["broker"]
     port = conf["port"]
-    topic = conf["topic"]
+    topic = "smartStation/station_1/temperature/temperature_sensor_s1_1"
     SensorPublisher = SensorPublisher(clientID, topic, broker, port)
     SensorPublisher.start()
     time.sleep(5)
