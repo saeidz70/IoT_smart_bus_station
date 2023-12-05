@@ -1,4 +1,4 @@
-stations = []
+# stations = []
 #
 # for key, values in dictionary["stations"].values():
 #     stations.append(key)
@@ -17,3 +17,14 @@ stations = []
 #
 #     else:
 #         pass
+
+
+import requests
+
+uri = "http://127.0.0.1:8080/"
+body = {
+    "address": ["lastUpdate3"]
+}
+response = requests.delete(uri, json=body)
+
+# request = requests.post(uri, json=body)

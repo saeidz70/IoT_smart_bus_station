@@ -23,123 +23,96 @@ class CatalogAPI:
 
     @cherrypy.tools.json_out()
     def GET(self, *uri):
-        if not uri:
-            return self.catalog
+        for key, value in self.catalog.items():
+            if len(uri) == 0:
+                welcome_message = ("This is a web service for Smart Bus Station. For more information please visit "
+                                   "our Github: https://github.com/saeidz70/IoT_smart_bus_station")
+                return welcome_message
 
-        elif len(uri) == 1 and uri[0] == "projectOwner":
-            return self.catalog.get("projectOwner", "")
-        elif len(uri) == 1 and uri[0] == "projectName":
-            return self.catalog.get("projectName", "")
-        elif len(uri) == 1 and uri[0] == "lastUpdate":
-            return self.catalog.get("lastUpdate", "")
+            elif len(uri) == 1 and key == uri[0]:
+                if isinstance(value, dict):
+                    return list(value.keys())
+                else:
+                    return value
 
-        elif len(uri) == 1 and uri[0] == "settings":
-            return self.catalog.get("settings", {})
-        elif len(uri) == 3 and uri[0] == "settings" and uri[1] == "services":
-            service_type = uri[2]
-            return self.catalog.get("settings", {}).get("services", {}).get(service_type, {})
-        elif len(uri) == 2 and uri[0] == "settings":
-            setting_item = uri[1]
-            return self.catalog.get("settings", {}).get(setting_item, {})
+            elif len(uri) == 2 and key == uri[0]:
+                for a, b in value.items():
+                    if a == uri[1]:
+                        if isinstance(b, dict):
+                            return list(b.keys())
+                        else:
+                            return b
 
-        # "http://127.0.0.1:8080/stations/station_1/sensors/temperature/sensor_topic"
-        elif len(uri) == 1 and uri[0] == "stations":
-            return self.station_list()
+            elif len(uri) == 3 and key == uri[0]:
+                for c, d in value.items():
+                    if c == uri[1]:
+                        for e, f in d.items():
+                            if e == uri[2]:
+                                if isinstance(f, dict):
+                                    return list(f.keys())
+                                else:
+                                    return f
 
-        elif len(uri) == 2 and uri[0] == "stations":
-            station_name = uri[1]
-            return {
-                "sensors": self.sensors(station_name),
-                "device_status": self.device_status(station_name),
-                "threshold": self.threshold(station_name)
-            }
-        elif len(uri) == 3 and uri[0] == "stations":
-            if uri[2] == "sensors":
-                station_name = uri[1]
-                return self.sensors(station_name)
-            elif uri[2] == "device_status":
-                station_name = uri[1]
-                return self.device_status(station_name)
-            elif uri[2] == "threshold":
-                station_name = uri[1]
-                return self.threshold(station_name)
+            elif len(uri) == 4 and key == uri[0]:
+                for g, h in value.items():
+                    if g == uri[1]:
+                        for i, j in h.items():
+                            if i == uri[2]:
+                                for k, l in j.items():
+                                    if k == uri[3]:
+                                        if isinstance(l, dict):
+                                            return list(l.keys())
+                                        else:
+                                            return l
 
-        elif len(uri) == 4 and uri[0] == "stations":
-            if uri[2] == "sensors" and uri[3] == "temperature":
-                station_name = uri[1]
-                return self.sensors(station_name)["temperature"]
+            elif len(uri) == 5 and key == uri[0]:
+                for m, n in value.items():
+                    if m == uri[1]:
+                        for o, p in n.items():
+                            if o == uri[2]:
+                                for q, r in p.items():
+                                    if q == uri[3]:
+                                        for s, t in r.items():
+                                            if s == uri[4]:
+                                                if isinstance(t, dict):
+                                                    return list(t.keys())
+                                                else:
+                                                    return t
 
-            elif uri[2] == "sensors" and uri[3] == "humidity":
-                station_name = uri[1]
-                return self.sensors(station_name)["humidity"]
-
-            elif uri[2] == "sensors" and uri[3] == "motion":
-                station_name = uri[1]
-                return self.sensors(station_name)["motion"]
-
-            elif uri[2] == "sensors" and uri[3] == "passenger_IN":
-                station_name = uri[1]
-                return self.sensors(station_name)["passenger_IN"]
-
-            elif uri[2] == "sensors" and uri[3] == "passenger_OUT":
-                station_name = uri[1]
-                return self.sensors(station_name)["passenger_OUT"]
-
-
-        elif len(uri) == 5 and uri[0] == "stations":
-
-            if uri[2] == "sensors" and uri[3] == "temperature":
-                if uri[4] == "sensor_name":
-                    station_name = uri[1]
-                    return self.sensors(station_name)["temperature"][0]["sensor_name"]
-
-                elif uri[4] == "sensor_id":
-                    station_name = uri[1]
-                    return self.sensors(station_name)["temperature"][0]["sensor_id"]
-
-                elif uri[4] == "unit":
-                    station_name = uri[1]
-                    return self.sensors(station_name)["temperature"][0]["unit"]
-
-                elif uri[4] == "sensor_topic":
-                    station_name = uri[1]
-                    return self.sensors(station_name)["temperature"][0]["sensor_topic"]
-
+            elif len(uri) == 6 and key == uri[0]:
+                for u, v in value.items():
+                    if u == uri[1]:
+                        for w, x in v.items():
+                            if w == uri[2]:
+                                for y, z in x.items():
+                                    if y == uri[3]:
+                                        for alpha, beta in z.items():
+                                            if alpha == uri[4]:
+                                                for gamma, epsylun in beta.items():
+                                                    if gamma == uri[5]:
+                                                        return epsylun
         else:
             raise cherrypy.HTTPError(400, "Wrong URI")
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def POST(self):
-        body = cherrypy.request.body.read()
-        json_body = json.loads(body)
+        body = cherrypy.request.json
+        address = body["address"]
+        value = body["value"]
 
-        if "settings" in json_body and "services" in json_body["settings"]:
-            service_type = list(json_body["settings"]["services"].keys())[0]
-            service_info = json_body["settings"]["services"][service_type]
-            if service_type not in self.catalog.get("settings", {}).get("services", {}):
-                self.catalog["settings"]["services"][service_type] = {}
-            self.catalog["settings"]["services"][service_type] = service_info
+        if len(address) == 1:
+            self.catalog[address[0]] = value
             self.save_catalog()
-            return {"message": "Service added successfully"}
-        else:
-            raise cherrypy.HTTPError(400, "Bad Request")
+            return self.catalog[address[0]]
 
-    # @cherrypy.tools.json_in()
-    # @cherrypy.tools.json_out()
-    # def PUT(self, *uri):
-    #     if len(uri) == 2 and uri[0] == "update_service":
-    #         service_type = uri[1]
-    #         data = cherrypy.request.body.read()
-    #         data = json.loads(data)
-    #         services = self.catalog.get("settings", {}).get("services", {}).get(service_type)
-    #         if services is not None:
-    #             services.update(data)
-    #             self.save_catalog()
-    #             return {"message": "Service updated successfully"}
-    #         raise cherrypy.HTTPError(404, "Service not found")
-    #     else:
-    #         raise cherrypy.HTTPError(400, "Wrong URI")
+        elif len(address) == 2:
+            for i, j in self.catalog.items():
+                if address[0] == i:
+                    if isinstance(j, dict):
+                        j[address[1]] = value
+                        self.save_catalog()
+                        return j[address[1]]
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
@@ -165,15 +138,22 @@ class CatalogAPI:
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
+    @cherrypy.expose
     def DELETE(self, *uri):
-        if len(uri) == 2 and uri[0] == "delete_service":
-            service_type = uri[1]
-            services = self.catalog.get("settings", {}).get("services", {}).get(service_type)
-            if services is not None:
-                del self.catalog["settings"]["services"][service_type]
+        for key, value in self.catalog.items():
+            if len(uri) == 1 and key == uri[0]:
+                del self.catalog[uri[0]]
                 self.save_catalog()
-                return {"message": "Service deleted successfully"}
-            raise cherrypy.HTTPError(404, "Service not found")
+                return
+            elif len(uri) == 2 and key == uri[0]:
+                for a, b in value.items():
+                    if a == uri[1]:
+                        if isinstance(b, dict):
+                            return '''take care of what you are doing!!!'''
+                        else:
+                            del self.catalog[uri[0]][uri[1]]
+                            self.save_catalog()
+                            return b
 
     @cherrypy.tools.json_out()
     def sensors(self, station_name):

@@ -85,3 +85,6 @@ if __name__ == "__main__":
     SensorPublisher = SensorPublisher(clientID, topic, broker, port)
     SensorPublisher.start()
     time.sleep(5)
+
+
+# TODO: making another station that submit in catalog
