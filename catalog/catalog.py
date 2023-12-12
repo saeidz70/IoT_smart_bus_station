@@ -88,9 +88,9 @@ class CatalogAPI:
                                     if y == uri[3]:
                                         for alpha, beta in z.items():
                                             if alpha == uri[4]:
-                                                for gamma, epsylun in beta.items():
+                                                for gamma, epsilon in beta.items():
                                                     if gamma == uri[5]:
-                                                        return epsylun
+                                                        return epsilon
         else:
             raise cherrypy.HTTPError(400, "Wrong URI")
 
@@ -99,94 +99,195 @@ class CatalogAPI:
     def POST(self):
         body = cherrypy.request.json
         address = body["address"]
-        value = body["value"]
+        data = body["data"]
 
-        if len(address) == 1:
-            self.catalog[address[0]] = value
-            self.save_catalog()
-            return self.catalog[address[0]]
+        for key, value in self.catalog.items():
+            if len(address) == 1:
+                self.catalog[address[0]] = data
+                self.save_catalog()
+                return f"Your item is successfully added to catalog: {self.catalog[address[0]]}"
 
-        elif len(address) == 2:
-            for i, j in self.catalog.items():
-                if address[0] == i:
-                    if isinstance(j, dict):
-                        j[address[1]] = value
+            elif len(address) == 2 and address[0] == key:
+                value[address[1]] = data
+                self.save_catalog()
+                return f"Your item is successfully added to catalog: {value[address[1]]}"
+
+            elif len(address) == 3 and address[0] == key:
+                for a, b in value.items():
+                    if address[1] == a:
+                        b[address[2]] = data
                         self.save_catalog()
-                        return j[address[1]]
+                        return f"Your item is successfully added to catalog: {b[address[2]]}"
+
+            elif len(address) == 4 and address[0] == key:
+                for c, d in value.items():
+                    if address[1] == c:
+                        for e, f in d.items():
+                            if address[2] == e:
+                                f[address[3]] = data
+                                self.save_catalog()
+                                return f"Your item is successfully added to catalog: {f[address[3]]}"
+
+            elif len(address) == 5 and address[0] == key:
+                for g, h in value.items():
+                    if address[1] == g:
+                        for i, j in h.items():
+                            if address[2] == i:
+                                for k, l in j.items():
+                                    if address[3] == k:
+                                        l[address[4]] = data
+                                        self.save_catalog()
+                                        return f"Your item is successfully added to catalog: {l[address[4]]}"
+
+            elif len(address) == 6 and address[0] == key:
+                for m, n in value.items():
+                    if address[1] == m:
+                        for o, p in n.items():
+                            if address[2] == o:
+                                for q, r in p.items():
+                                    if address[3] == q:
+                                        for s, t in r.items():
+                                            if address[4] == s:
+                                                t[address[5]] = data
+                                                self.save_catalog()
+                                                return f"Your item is successfully added to catalog: {t[address[5]]}"
+        else:
+            raise cherrypy.HTTPError(400, "Wrong Request")
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
-    def PUT(self, *uri):
-        if len(uri) == 2 and uri[0] == "update_threshold":
-            station_name = uri[1]
-            data = cherrypy.request.body.read()
-            data = json.loads(data)
+    def PUT(self):
+        body = cherrypy.request.json
+        address = body["address"]
+        data = body["data"]
 
-            for station in self.catalog.get("stations", []):
-                if station_name in station:
-                    if "threshold" in station[station_name]:
-                        station[station_name]["threshold"]["humidity"] = data.get("humidity", 25)
+        for key, value in self.catalog.items():
+            if len(address) == 1:
+                self.catalog[address[0]] = data
+                self.save_catalog()
+                return f"Your item is successfully added to catalog: {self.catalog[address[0]]}"
+
+            elif len(address) == 2 and address[0] == key:
+                value[address[1]] = data
+                self.save_catalog()
+                return f"Your item is successfully added to catalog: {value[address[1]]}"
+
+            elif len(address) == 3 and address[0] == key:
+                for a, b in value.items():
+                    if address[1] == a:
+                        b[address[2]] = data
                         self.save_catalog()
-                        return {"message": f"Threshold for humidity updated successfully for {station_name}"}
-                    else:
-                        raise cherrypy.HTTPError(400, "Threshold not found for the specified station")
+                        return f"Your item is successfully added to catalog: {b[address[2]]}"
 
-            raise cherrypy.HTTPError(404, f"Station {station_name} not found")
+            elif len(address) == 4 and address[0] == key:
+                for c, d in value.items():
+                    if address[1] == c:
+                        for e, f in d.items():
+                            if address[2] == e:
+                                f[address[3]] = data
+                                self.save_catalog()
+                                return f"Your item is successfully added to catalog: {f[address[3]]}"
 
+            elif len(address) == 5 and address[0] == key:
+                for g, h in value.items():
+                    if address[1] == g:
+                        for i, j in h.items():
+                            if address[2] == i:
+                                for k, l in j.items():
+                                    if address[3] == k:
+                                        l[address[4]] = data
+                                        self.save_catalog()
+                                        return f"Your item is successfully added to catalog: {l[address[4]]}"
+
+            elif len(address) == 6 and address[0] == key:
+                for m, n in value.items():
+                    if address[1] == m:
+                        for o, p in n.items():
+                            if address[2] == o:
+                                for q, r in p.items():
+                                    if address[3] == q:
+                                        for s, t in r.items():
+                                            if address[4] == s:
+                                                t[address[5]] = data
+                                                self.save_catalog()
+                                                return f"Your item is successfully added to catalog: {t[address[5]]}"
         else:
-            raise cherrypy.HTTPError(400, "Wrong URI")
+            raise cherrypy.HTTPError(400, "Wrong Request")
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     @cherrypy.expose
     def DELETE(self, *uri):
-        for key, value in self.catalog.items():
-            if len(uri) == 1 and key == uri[0]:
-                del self.catalog[uri[0]]
-                self.save_catalog()
-                return
-            elif len(uri) == 2 and key == uri[0]:
-                for a, b in value.items():
-                    if a == uri[1]:
-                        if isinstance(b, dict):
-                            return '''take care of what you are doing!!!'''
-                        else:
-                            del self.catalog[uri[0]][uri[1]]
-                            self.save_catalog()
-                            return b
-
-    @cherrypy.tools.json_out()
-    def sensors(self, station_name):
-        for station in self.catalog.get("stations", []):
-            if station_name in station:
-                return station[station_name]["sensors"]
-        raise cherrypy.HTTPError(404, "Station not found")
-
-    @cherrypy.tools.json_out()
-    def device_status(self, station_name):
-        for station in self.catalog.get("stations", []):
-            if station_name in station:
-                return station[station_name]["device_status"]
-        raise cherrypy.HTTPError(404, "Station not found")
-
-    @cherrypy.tools.json_out()
-    def threshold(self, station_name):
-        for station in self.catalog.get("stations", []):
-            if station_name in station:
-                return station[station_name]["threshold"]
-        raise cherrypy.HTTPError(404, "Station not found")
-
-    @cherrypy.tools.json_out()
-    def station_list(self):
-        return [station for station in self.catalog.get("stations", [])]
-
-    @cherrypy.tools.json_out()
-    def project_info(self):
-        return {
-            "projectOwner": self.catalog.get("projectOwner", ""),
-            "projectName": self.catalog.get("projectName", ""),
-            "lastUpdate": self.catalog.get("lastUpdate", "")
-        }
+        for a, b in self.catalog.items():
+            if a == uri[0]:
+                if len(uri) == 1:
+                    if isinstance(b, dict) and len(b) != 0:
+                        return '''take care of what you are doing!!!'''
+                    else:
+                        del self.catalog[uri[0]]
+                        self.save_catalog()
+                        return b
+                else:
+                    for c, d in b.items():
+                        if c == uri[1]:
+                            if len(uri) == 2:
+                                if isinstance(d, dict) and len(d) != 0:
+                                    return '''take care of what you are doing!!!'''
+                                else:
+                                    del self.catalog[uri[0]][uri[1]]
+                                    self.save_catalog()
+                                    return d
+                            else:
+                                for e, f in d.items():
+                                    if e == uri[2]:
+                                        if len(uri) == 3:
+                                            if isinstance(f, dict) and len(f) != 0:
+                                                return '''take care of what you are doing!!!'''
+                                            else:
+                                                del self.catalog[uri[0]][uri[1]][uri[2]]
+                                                self.save_catalog()
+                                                return f
+                                        else:
+                                            for g, h in f.items():
+                                                if g == uri[3]:
+                                                    if len(uri) == 4:
+                                                        if isinstance(h, dict) and len(h) != 0:
+                                                            return '''take care of what you are doing!!!'''
+                                                        else:
+                                                            del self.catalog[uri[0]][uri[1]][uri[2]][uri[3]]
+                                                            self.save_catalog()
+                                                            return h
+                                                    else:
+                                                        for i, j in h.items():
+                                                            if i == uri[4]:
+                                                                if len(uri) == 5:
+                                                                    if isinstance(j, dict) and len(j) != 0:
+                                                                        return '''take care of what you are doing!!!'''
+                                                                    else:
+                                                                        del \
+                                                                            self.catalog[uri[0]][uri[1]][uri[2]][
+                                                                                uri[3]][
+                                                                                uri[4]]
+                                                                        self.save_catalog()
+                                                                        return j
+                                                                else:
+                                                                    for k, l in j.items():
+                                                                        if k == uri[5]:
+                                                                            if len(uri) == 6:
+                                                                                if isinstance(l, dict) and len(l) != 0:
+                                                                                    return '''take care of what you 
+                                                                                    are doing!!!'''
+                                                                                else:
+                                                                                    del self.catalog[uri[0]][uri[1]][
+                                                                                        uri[2]][uri[3]][uri[4]][
+                                                                                        uri[5]]
+                                                                                    self.save_catalog()
+                                                                                    return l
+                                                                            else:
+                                                                                raise cherrypy.HTTPError("URI is not "
+                                                                                                         "Valid")
+        else:
+            raise cherrypy.HTTPError(400, "Wrong Request")
 
 
 if __name__ == "__main__":
