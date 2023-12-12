@@ -7,6 +7,7 @@ from stationHub.sensors.passenger_IN_sens import PassengerInSensor
 from stationHub.sensors.passenger_OUT_sens import PassengerOutSensor
 from stationHub.sensors.humidity_sens import HumiditySensor
 from stationHub.sensors.temperature_sens import TemperatureSensor
+from stationHub.sensors.motion_sens import MotionSensor
 
 
 class SensorPublisher:
@@ -32,7 +33,7 @@ class SensorPublisher:
             humidity = (HumiditySensor().humiditySens())
             passenger_in = (PassengerInSensor().passenger_counter())
             passenger_out = (PassengerOutSensor().passenger_counter())
-            motion = random.randint(0, 1)
+            motion = (MotionSensor().passenger_motion())
 
             temperature_payload = self.create_sensor_payload("temperature", "Cel", temperature)
             humidity_payload = self.create_sensor_payload("humidity", "d", humidity)
@@ -81,7 +82,7 @@ if __name__ == "__main__":
     clientID = conf["client_id"]
     broker = conf["broker"]
     port = conf["port"]
-    topic = "smartStation/station_1/temperature/temperature_sensor_s1_1"
+    topic = "smartStation/station_1/humidity/humid_1"
     SensorPublisher = SensorPublisher(clientID, topic, broker, port)
     SensorPublisher.start()
     time.sleep(5)

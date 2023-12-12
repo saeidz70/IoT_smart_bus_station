@@ -2,7 +2,6 @@ import json
 import random
 import time
 import requests
-from serverHub.serverside_subscriber import global_sensor_data
 
 
 class StationController:

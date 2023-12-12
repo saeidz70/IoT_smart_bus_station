@@ -1,5 +1,7 @@
 from datetime import datetime
 import random
+
+import requests
 from scipy.stats import truncnorm
 
 
@@ -40,5 +42,22 @@ class HumiditySensor:
         # Generate humidity based on the truncated normal distribution
         humidity = int(distribution.rvs())
 
+        message = {"address":
+                       ["stations", "station_1", "sensors", "humidity"],
+
+                   "data": {
+                       "sensor_humid_1": {
+                           "sensor_name": "humidity_sensor_s1_1",
+                           "sensor_id": "humid_sen_id_s1_1",
+                           "unit": "%",
+                           "sensor_topic": "smartStation/station_1/humidity/humid_1",
+                           "value": humidity,
+                           "last_update": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                       }
+                   }
+                   }
+
+        uri = "http://127.0.0.1:8080/"
+        requests.post(uri, json=message)
         print(f"Humidity: {humidity}%")
         return humidity

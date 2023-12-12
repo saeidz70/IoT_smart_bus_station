@@ -40,8 +40,8 @@
                         "sensor_id": "temp_sen_id_s1_1",
                         "unit": "cel",
                         "sensor_topic": "smartStation/station_1/temperature/temp_1",
-                        "value": 12,
-                        "last_update": "2023-12-01 12:28"
+                        "value": 1,
+                        "last_update": "2023-12-12 21:53:58"
                     }
                 },
                 "humidity": {
@@ -50,18 +50,18 @@
                         "sensor_id": "humid_sen_id_s1_1",
                         "unit": "%",
                         "sensor_topic": "smartStation/station_1/humidity/humid_1",
-                        "value": 12,
-                        "last_update": "2023-12-01 12:28"
+                        "value": 42,
+                        "last_update": "2023-12-12 21:53:58"
                     }
                 },
                 "motion": {
-                    "sensor_temp_1": {
+                    "sensor_motion_1": {
                         "sensor_name": "motion_sensor_s1_1",
                         "sensor_id": "motion_sen_id_s1_1",
                         "unit": "bol",
                         "sensor_topic": "smartStation/station_1/motion/motion_1",
                         "value": 1,
-                        "last_update": "2023-12-01 12:28"
+                        "last_update": "2023-12-12 21:53:58"
                     }
                 },
                 "passenger_IN": {
@@ -70,8 +70,8 @@
                         "sensor_id": "pass_IN_sen_id_s1_1",
                         "unit": "int",
                         "sensor_topic": "smartStation/station_1/passenger_IN/pass_IN_1",
-                        "value": 3,
-                        "last_update": "2023-12-01 12:28"
+                        "value": 0,
+                        "last_update": "2023-12-12 21:53:58"
                     }
                 },
                 "passenger_OUT": {
@@ -80,8 +80,8 @@
                         "sensor_id": "pass_OUT_sen_id_s1_1",
                         "unit": "int",
                         "sensor_topic": "smartStation/station_1/passenger_OUT/pass_OUT_1",
-                        "value": 2,
-                        "last_update": "2023-12-01 12:28"
+                        "value": 0,
+                        "last_update": "2023-12-12 21:53:58"
                     }
                 }
             },

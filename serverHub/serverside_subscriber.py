@@ -1,3 +1,5 @@
+import requests
+
 from mqtt.MyMQTT import *
 import time
 import json
@@ -6,12 +8,6 @@ from datetime import datetime
 
 class SensorsSubscriber:
     def __init__(self, clientID, topic, broker, port):
-        self.passenger_OUT = None
-        self.passenger_IN = None
-        self.motion = None
-        self.humidity = None
-        self.temperature = None
-        self.client = None
         self.client_ID = clientID
         self.base_topic = topic
         self.temperature_topic = self.base_topic + "sensor/temperature"
@@ -52,16 +48,21 @@ class SensorsSubscriber:
 
 
 if __name__ == "__main__":
-    catalog = json.load(open("../catalog/catalog.json"))
-    conf = catalog["services"]["MQTT"][1]
+
+    conf = requests.get("http://127.0.0.1:8080/settings/services/MQTT/subscribers")
     print(conf)
     clientID = conf["client_id"]
     broker = conf["broker"]
     port = conf["port"]
-    topic = conf["topic"]
+    topic = "smartStation/station_1"
 
     SensorsSubscriber = SensorsSubscriber(clientID, topic, broker, port)
     SensorsSubscriber.run()
 
     while True:
         time.sleep(1)
+#
+# "smartStation/station1/*"
+# "smartStation/station2/*"
+# "smartStation/station3/*"
+# "smartStation/station4/*"

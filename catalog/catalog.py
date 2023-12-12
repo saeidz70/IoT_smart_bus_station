@@ -30,28 +30,19 @@ class CatalogAPI:
                 return welcome_message
 
             elif len(uri) == 1 and key == uri[0]:
-                if isinstance(value, dict):
-                    return list(value.keys())
-                else:
-                    return value
+                return value
 
             elif len(uri) == 2 and key == uri[0]:
                 for a, b in value.items():
                     if a == uri[1]:
-                        if isinstance(b, dict):
-                            return list(b.keys())
-                        else:
-                            return b
+                        return b
 
             elif len(uri) == 3 and key == uri[0]:
                 for c, d in value.items():
                     if c == uri[1]:
                         for e, f in d.items():
                             if e == uri[2]:
-                                if isinstance(f, dict):
-                                    return list(f.keys())
-                                else:
-                                    return f
+                                return f
 
             elif len(uri) == 4 and key == uri[0]:
                 for g, h in value.items():
@@ -60,10 +51,7 @@ class CatalogAPI:
                             if i == uri[2]:
                                 for k, l in j.items():
                                     if k == uri[3]:
-                                        if isinstance(l, dict):
-                                            return list(l.keys())
-                                        else:
-                                            return l
+                                        return l
 
             elif len(uri) == 5 and key == uri[0]:
                 for m, n in value.items():
@@ -74,10 +62,7 @@ class CatalogAPI:
                                     if q == uri[3]:
                                         for s, t in r.items():
                                             if s == uri[4]:
-                                                if isinstance(t, dict):
-                                                    return list(t.keys())
-                                                else:
-                                                    return t
+                                                return t
 
             elif len(uri) == 6 and key == uri[0]:
                 for u, v in value.items():
