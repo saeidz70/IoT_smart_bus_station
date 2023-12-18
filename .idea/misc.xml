@@ -3,7 +3,7 @@
   <component name="Black">
     <option name="executionMode" value="BINARY" />
     <option name="pathToExecutable" value="$USER_HOME$/opt/anaconda3/bin/black" />
-    <option name="sdkUUID" value="70a9d7ea-f8a4-45e0-96cd-0f46ad22190f" />
+    <option name="sdkName" value="Python 3.10 (smartStation)" />
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (smartStation)" project-jdk-type="Python SDK" />
 </project>

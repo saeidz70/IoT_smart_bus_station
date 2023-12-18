@@ -1,24 +1,20 @@
-import random
+import requests
+
 from mqtt.MyMQTT import *
 import time
 import json
 from datetime import datetime
-from stationHub.sensors.passenger_IN_sens import PassengerInSensor
-from stationHub.sensors.passenger_OUT_sens import PassengerOutSensor
-from stationHub.sensors.humidity_sens import HumiditySensor
-from stationHub.sensors.temperature_sens import TemperatureSensor
-from stationHub.sensors.motion_sens import MotionSensor
+from stationHub.station_1.sensors.passenger_IN_sens import PassengerInSensor
+from stationHub.station_1.sensors.passenger_OUT_sens import PassengerOutSensor
+from stationHub.station_1.sensors.humidity_sens import HumiditySensor
+from stationHub.station_1.sensors.temperature_sens import TemperatureSensor
+from stationHub.station_1.sensors.motion_sens import MotionSensor
 
 
 class SensorPublisher:
-    def __init__(self, clientID, topic, broker, port):
+    def __init__(self, clientID, broker, port):
         self.client = MyMQTT(clientID, broker, port, self)
-        self.base_topic = topic
-        self.temperature_topic = self.base_topic + "sensor/temperature"
-        self.humidity_topic = self.base_topic + "sensor/humidity"
-        self.passenger_IN_topic = self.base_topic + "sensor/passengerIn"
-        self.passenger_OUT_topic = self.base_topic + "sensor/passengerOut"
-        self.motion_topic = self.base_topic + "sensor/motion"
+        self.get_topic()
 
     def start(self):
         self.client.start()
@@ -26,6 +22,18 @@ class SensorPublisher:
 
     def stop(self):
         self.client.stop()
+
+    def get_topic(self):
+        self.temperature_topic = requests.get(
+            "http://127.0.0.1:8080/stations/station_1/sensors/temperature/sensor_temp_1/sensor_topic").json()
+        self.humidity_topic = requests.get(
+            "http://127.0.0.1:8080/stations/station_1/sensors/humidity/sensor_humid_1/sensor_topic").json()
+        self.passenger_IN_topic = requests.get(
+            "http://127.0.0.1:8080/stations/station_1/sensors/passenger_IN/sensor_pass_in_1/sensor_topic").json()
+        self.passenger_OUT_topic = requests.get(
+            "http://127.0.0.1:8080/stations/station_1/sensors/passenger_OUT/sensor_pass_out_1/sensor_topic").json()
+        self.motion_topic = requests.get(
+            "http://127.0.0.1:8080/stations/station_1/sensors/motion/sensor_motion_1/sensor_topic").json()
 
     def publish(self):
         while True:
@@ -41,22 +49,21 @@ class SensorPublisher:
             passenger_out_payload = self.create_sensor_payload("passenger_out", "d", passenger_out)
             motion_payload = self.create_sensor_payload("crowd", "d", motion)
 
-
             self.client.myPublish(self.temperature_topic, temperature_payload)
             print(self.temperature_topic, temperature_payload)
-            time.sleep(5)  # Publish temperature every 30 seconds
+            time.sleep(5)
             self.client.myPublish(self.humidity_topic, humidity_payload)
             print(self.humidity_topic, humidity_payload)
-            time.sleep(5)  # Publish humidity every 60 seconds
+            time.sleep(5)
             self.client.myPublish(self.passenger_IN_topic, passenger_in_payload)
             print(self.passenger_IN_topic, passenger_in_payload)
-            time.sleep(5)  # Publish humidity every 60 seconds
+            time.sleep(5)
             self.client.myPublish(self.passenger_OUT_topic, passenger_out_payload)
             print(self.passenger_OUT_topic, passenger_out_payload)
-            time.sleep(5)  # Publish humidity every 60 seconds
+            time.sleep(5)
             self.client.myPublish(self.motion_topic, motion_payload)
             print(self.motion_topic, motion_payload)
-            time.sleep(5)  # Publish temperature every 30 seconds
+            time.sleep(5)
 
             print("Published sensor data at", datetime.now())
 
@@ -76,16 +83,13 @@ class SensorPublisher:
 
 
 if __name__ == "__main__":
-    catalog = json.load(open("../../catalog/catalog.json"))
-    conf = catalog["settings"]["services"]["MQTT"]["publishers"]
+    conf = requests.get("http://127.0.0.1:8080/settings/services/MQTT/publishers").json()
     print(conf)
     clientID = conf["client_id"]
     broker = conf["broker"]
     port = conf["port"]
-    topic = "smartStation/station_1/humidity/humid_1"
-    SensorPublisher = SensorPublisher(clientID, topic, broker, port)
+    SensorPublisher = SensorPublisher(clientID, broker, port)
     SensorPublisher.start()
     time.sleep(5)
-
 
 # TODO: making another station that submit in catalog

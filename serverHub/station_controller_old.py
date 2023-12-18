@@ -2,13 +2,11 @@ import json
 import random
 import time
 import requests
-from serverHub.serverside_subscriber import SensorsSubscriber
 
 
 class StationController:
     def __init__(self):
-        self.get_thresholds()
-        self.get_data()
+        self.get_catalog()
         self.command = {}
 
         # Initialize counters and intervals
@@ -16,46 +14,15 @@ class StationController:
         self.data_counter = 0
         self.command_counter = 0
 
-    def get_data(self):
-
-        conf = requests.get("http://127.0.0.1:8080/settings/services/MQTT/subscribers").json()
-        clientID = conf["client_id"]
-        broker = conf["broker"]
-        port = conf["port"]
-
-        topic = requests.get("http://127.0.0.1:8080/stations/station_1/station_topic").json()
-        sensorsSubscriber = SensorsSubscriber(clientID, topic, broker, port)
-        sensorsSubscriber.run()
-        time.sleep(10)
-        print(sensorsSubscriber.name, sensorsSubscriber.value)
-        # if sensorsSubscriber.name == "temperature":
-        #     self.sensor_temperature = sensorsSubscriber.value
-        #     print(self.sensor_temperature)
-        # elif sensorsSubscriber.name == "humidity":
-        #     self.sensor_humidity = sensorsSubscriber.value
-        #     print(self.sensor_humidity)
-        # elif sensorsSubscriber.name == "crowd":
-        #     self.sensor_motion == sensorsSubscriber.value
-        #     print(self.sensor_motion)
-        # elif sensorsSubscriber.name ==  "passenger_in":
-        #     self.passenger_IN = sensorsSubscriber.value
-        #     print(self.passenger_IN)
-        # elif sensorsSubscriber.name == "passenger_out":
-        #     self.passenger_OUT = sensorsSubscriber.value
-        #     print(self.passenger_OUT)
-        # if sensorsSubscriber.name == self.catalog["stations"]["station_1"]["sensors"]["temperature"]:
-        # for key in self.catalog["stations"]["station_1"]["sensors"]:
-        #     self.sensor
-
-    def get_thresholds(self):
+    def get_catalog(self):
         try:
-            response = requests.get("http://127.0.0.1:8080/stations/station_1/threshold")
+            response = requests.get("http://127.0.0.1:8080/threshold")
             if response.status_code == 200:
                 threshold = response.json()
                 self.temperature_cold_threshold = int(threshold["temperature_cold"])
                 self.temperature_hot_threshold = int(threshold["temperature_hot"])
                 self.humidity_threshold = int(threshold["humidity"])
-                print("get_thresholds: ", self.temperature_hot_threshold, self.temperature_cold_threshold,
+                print("get_catalog: ", self.temperature_hot_threshold, self.temperature_cold_threshold,
                       self.humidity_threshold)
 
                 return threshold
@@ -112,16 +79,14 @@ class StationController:
 
 
 if __name__ == "__main__":
+    controller = StationController()
 
-
-    uri = (requests.get("http://127.0.0.1:8080/settings/services/REST")).json()["uri"]
-    print(uri)
+    uri = (requests.get("http://127.0.0.1:8080/services/REST")).json()["uri"]
 
     while True:
-        controller = StationController()
         # Update get_catalog every 15 seconds
         if controller.catalog_counter % 15 == 0:
-            controller.get_thresholds()
+            controller.get_catalog()
             print("temperature_hot_threshold: ", controller.temperature_hot_threshold, "temperature_cold_threshold: ",
                   controller.temperature_cold_threshold, "humidity_threshold: ", controller.humidity_threshold)
 
