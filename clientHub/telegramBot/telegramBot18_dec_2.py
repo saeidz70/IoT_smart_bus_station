@@ -28,18 +28,8 @@ class TelegramBot:
             self.bot.send_message(message.chat.id, "Welcome! This is smart station telegram bot",
                                   reply_markup=markup_url)
 
-            self.bot.send_message(message.chat.id, "Please type your ID!")
-
-            @self.bot.message_handler(func=lambda m: True)
-            def authorized_id(message):
-                name = message.text.lower()
-                if name in self.authority():
-                    self.bot.send_message(message.chat.id, "authorized")
-                    show_services(message)
-                else:
-                    self.bot.send_message(message.chat.id, "not_authorized")
-                    telebot.types.ReplyKeyboardRemove()
-                    self.bot.clear_reply_handlers(message)
+            self.bot.send_message(message.chat.id, "Please type your ID!",
+                                  reply_markup=telebot.types.ReplyKeyboardRemove())
 
         @self.bot.message_handler(func=lambda message: message.text in self.authority())
         def handle_services(message):
@@ -63,22 +53,18 @@ class TelegramBot:
         def handle_services(message):
             if message.text in self.key_list:
                 self.address.append(message.text)
-                print(self.address)
                 end_point = "/".join(self.address)
-                print(end_point)
                 services_data = self.get_catalog_data(end_point)
-                print("message.text", message.text)
                 if services_data:
-                    print("services_data", services_data)
                     if isinstance(services_data, dict):
                         self.key_list.clear()
                         for key in services_data:
                             self.key_list.append(key)
-                        print("key_list", self.key_list)
                         show_services(message)
                     else:
                         self.bot.send_message(message.chat.id,
                                               f"{message.text}:\n{json.dumps(services_data, indent=2)}")
+                        handle_edit(message)
 
                 else:
                     self.bot.send_message(message.chat.id, "Failed to fetch services information")
@@ -92,61 +78,47 @@ class TelegramBot:
                         self.key_list.append(key)
                     show_services(message)
 
-        @self.bot.message_handler(func=lambda message: message.text == 'Thresholds')
-        def handle_thresholds(message):
-            thresholds_data = self.get_catalog_data('stations/station_1/threshold')
-            if thresholds_data:
-                humidity = thresholds_data["humidity"]
-                print(humidity)
-                temperature_cold = thresholds_data["temperature_cold"]
-                print(temperature_cold)
-                temperature_hot = thresholds_data["temperature_hot"]
-                print(temperature_hot)
-                self.bot.send_message(message.chat.id, f"Thresholds:\n Humidity: {humidity}\n "
-                                                       f"Temperature Cold: {temperature_cold}\n "
-                                                       f"Temperature Hot: {temperature_hot}")
+            elif message.text == "Edit":
+                self.bot.send_message(message.chat.id, "Please type the new value:",
+                                      reply_markup=telebot.types.ForceReply())
 
-                markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-                markup_change_threshold = telebot.types.KeyboardButton('Change Threshold')
-                markup_back_to_services = telebot.types.KeyboardButton('Show Services')
-                markup.add(markup_change_threshold, markup_back_to_services)
-                self.bot.send_message(message.chat.id, "Do you want to change the thresholds or get back to Services?",
-                                      reply_markup=markup)
+            elif message.reply_to_message and message.reply_to_message.text == "Please type the new value:":
+                try:
+                    new_value = int(message.text)
+                    self.put_catalog_data(new_value)
+                    self.bot.send_message(message.reply_to_message.chat.id, f"Value has been changed to {new_value}")
+                except ValueError:
+                    self.put_catalog_data(message.text)
+                    self.bot.send_message(message.reply_to_message.chat.id, f"Value has been changed to {message.text}")
 
-            else:
-                self.bot.send_message(message.chat.id, "Failed to fetch thresholds information")
+                message.text = "Go Back"
+                handle_services(message)
 
-        @self.bot.message_handler(func=lambda message: message.text == 'Change Threshold')
-        def change_thresholds(message):
+            elif message.text == "Add":
+                self.bot.send_message(message.chat.id, "Please add the value:",
+                                      reply_markup=telebot.types.ForceReply())
+
+            elif message.reply_to_message and message.reply_to_message.text == "Please add the value:":
+                try:
+                    new_value = int(message.text)
+                    self.put_catalog_data(new_value)
+                    self.bot.send_message(message.reply_to_message.chat.id, f"Value has been changed to {new_value}")
+                except ValueError:
+                    self.put_catalog_data(message.text)
+                    self.bot.send_message(message.reply_to_message.chat.id, f"Value has been changed to {message.text}")
+
+                message.text = "Go Back"
+                handle_services(message)
+
+        @self.bot.message_handler(func=lambda message: message.text == 'Edit')
+        def handle_edit(message):
             markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-            item_humidity = telebot.types.KeyboardButton('Humidity')
-            item_temperature_cold = telebot.types.KeyboardButton('Temperature Cold')
-            item_temperature_hot = telebot.types.KeyboardButton('Temperature Hot')
-            markup.add(item_humidity, item_temperature_cold, item_temperature_hot)
-
-            self.bot.send_message(message.chat.id, "Which value do you want to change?",
+            backButton = telebot.types.KeyboardButton('Go Back')
+            editButton = telebot.types.KeyboardButton('Edit')
+            addButton = telebot.types.KeyboardButton('Add')
+            markup.add(editButton, addButton, backButton)
+            self.bot.send_message(message.chat.id, "Do you want to edit this value?",
                                   reply_markup=markup)
-
-        @self.bot.message_handler(func=lambda message: message.text == 'Humidity')
-        def change_humidity(message):
-            self.bot.send_chat_action(message.chat.id, "typing")
-            # self.bot.reply_to(message, "hello")
-
-            self.bot.send_message(message.chat.id, "Please type the new threshold:",
-                                  reply_markup=telebot.types.ForceReply())
-
-        @self.bot.message_handler(func=lambda message: True, content_types=['text'])
-        def handle_message(message):
-            if message.reply_to_message:
-                new_threshold = message.text
-
-                self.bot.send_message(message.chat.id, f"New threshold saved as: {new_threshold}")
-
-        # TODO: change the threshold
-
-        # self.bot.send_message(message.chat.id, f"Services:\n{json.dumps(services_data, indent=2)}")
-
-        # self.bot.send_message(message.chat.id, "Failed to fetch services information")
 
     def get_keys(self):
         try:
@@ -171,8 +143,10 @@ class TelegramBot:
 
     def put_catalog_data(self, data):
         uri = "http://127.0.0.1:8080"
+        print("data: ", data)
         try:
             body = {"address": self.address, "data": data}
+            print("body: ", body)
             response = requests.put(uri, json=body)
             if response.status_code == 200:
                 return response.json()
