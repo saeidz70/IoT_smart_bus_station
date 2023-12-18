@@ -7,9 +7,10 @@ import json
 class TelegramBot:
     def __init__(self, bot_token):
         self.bot = telebot.TeleBot(bot_token)
-        self.max_attempts = 3
         self.authority()
         self.setup_handlers()
+        self.key_list = []
+        self.get_keys()
 
     def authority(self):
         self.telegram_authority = requests.get("http://127.0.0.1:8080/settings/telegram_authority").text
@@ -27,40 +28,57 @@ class TelegramBot:
             self.bot.send_message(message.chat.id, "Welcome! This is smart station telegram bot",
                                   reply_markup=markup_url)
 
-            self.bot.send_message(message.chat.id, "Please type your ID!")
+            # self.bot.send_message(message.chat.id, "Verification!",reply_markup=telebot.types.ReplyKeyboardRemove())
+            self.bot.send_message(message.chat.id, "Please type your ID!", reply_markup=telebot.types.ForceReply())
 
-            @self.bot.message_handler(func=lambda m: True)
-            def authorized_id(message):
-                name = message.text.lower()
+        @self.bot.message_handler(func=lambda message: message.text)
+        def authorized_id(message):
+            if message.reply_to_message:  #and message.reply_to_message.text == "Please type your ID!":
+                name = message.text.lower().strip()
                 if name in self.authority():
                     self.bot.send_message(message.chat.id, "authorized")
                     show_services(message)
                 else:
-                    self.bot.send_message(message.chat.id, "not_authorized")
-                    telebot.types.ReplyKeyboardRemove()
-                    self.bot.clear_reply_handlers(message)
-
-        @self.bot.message_handler(func=lambda message: message.text in self.authority())
-        def handle_services(message):
-            show_services(message)
+                    self.bot.send_message(message.chat.id, "not_authorized",
+                                          reply_markup=telebot.types.ReplyKeyboardRemove())
 
         @self.bot.message_handler(func=lambda message: message.text == 'Show Services')
         def show_services(message):
+            # markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+            # button_list = {}
+            # for key in self.key_list:
+            #     button_list.update(=telebot.types.KeyboardButton(key))
+            # markup.add(*button_list)
+            # self.bot.send_message(message.chat.id, "What information would you like to see?",
+            #                       reply_markup=markup)
+            # pass
             markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-            item_services = telebot.types.KeyboardButton('Services')
-            item_sensors = telebot.types.KeyboardButton('Sensors')
-            item_thresholds = telebot.types.KeyboardButton('Thresholds')
+            item_services = telebot.types.KeyboardButton('projectOwner')
+            item_sensors = telebot.types.KeyboardButton('projectName')
+            item_thresholds = telebot.types.KeyboardButton('settings')
             markup.add(item_services, item_sensors, item_thresholds)
             self.bot.send_message(message.chat.id, "What information would you like to see?",
                                   reply_markup=markup)
+            print(message)
+            print(message.text)
+            print(self.key_list)
 
-        @self.bot.message_handler(func=lambda message: message.text == 'Services')
+
+        @self.bot.message_handler(func=lambda message: message.text)
         def handle_services(message):
-            services_data = self.get_catalog_data('services')
-            if services_data:
-                self.bot.send_message(message.chat.id, f"Services:\n{json.dumps(services_data, indent=2)}")
-            else:
-                self.bot.send_message(message.chat.id, "Failed to fetch services information")
+            print("agha jalal")
+            print(message)
+            print(message.text)
+            print(self.key_list)
+            if message.text in self.key_list:
+                print("jalal")
+                services_data = self.get_catalog_data(message.text)
+
+                print(message.text, services_data)
+                if services_data:
+                    self.bot.send_message(message.chat.id, f"Services:\n{json.dumps(services_data, indent=2)}")
+                else:
+                    self.bot.send_message(message.chat.id, "Failed to fetch services information")
 
         @self.bot.message_handler(func=lambda message: message.text == 'Sensors')
         def handle_sensors(message):
@@ -110,23 +128,33 @@ class TelegramBot:
             self.bot.send_chat_action(message.chat.id, "typing")
             # self.bot.reply_to(message, "hello")
 
-            self.bot.send_message(message.chat.id, "Please type the new threshold:", reply_markup=telebot.types.ForceReply())
+            self.bot.send_message(message.chat.id, "Please type the new threshold:",
+                                  reply_markup=telebot.types.ForceReply())
 
         @self.bot.message_handler(func=lambda message: True, content_types=['text'])
         def handle_message(message):
             if message.reply_to_message:
                 new_threshold = message.text
 
-
                 self.bot.send_message(message.chat.id, f"New threshold saved as: {new_threshold}")
 
-        #TODO: change the threshold
+        # TODO: change the threshold
 
-                # self.bot.send_message(message.chat.id, f"Services:\n{json.dumps(services_data, indent=2)}")
+        # self.bot.send_message(message.chat.id, f"Services:\n{json.dumps(services_data, indent=2)}")
 
-                # self.bot.send_message(message.chat.id, "Failed to fetch services information")
+        # self.bot.send_message(message.chat.id, "Failed to fetch services information")
 
-
+    def get_keys(self):
+        try:
+            response = requests.get(f"http://127.0.0.1:8080/")
+            if response.status_code == 200:
+                data = requests.get("http://127.0.0.1:8080/").json()
+                for key in data:
+                    self.key_list.append(key)
+                return response.json()
+        except Exception as e:
+            print(f"Error fetching information:", str(e))
+        return None
 
     def get_catalog_data(self, endpoint):
         try:

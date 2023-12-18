@@ -25,9 +25,8 @@ class CatalogAPI:
     def GET(self, *uri):
         for key, value in self.catalog.items():
             if len(uri) == 0:
-                welcome_message = ("This is a web service for Smart Bus Station. For more information please visit "
-                                   "our Github: https://github.com/saeidz70/IoT_smart_bus_station")
-                return welcome_message
+                # welcome_message = ("This is a web service for Smart Bus Station. For more information please visit "our Github: https://github.com/saeidz70/IoT_smart_bus_station")
+                return self.catalog
 
             elif len(uri) == 1 and key == uri[0]:
                 return value

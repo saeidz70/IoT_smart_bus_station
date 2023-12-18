@@ -7,14 +7,15 @@ import json
 class TelegramBot:
     def __init__(self, bot_token):
         self.bot = telebot.TeleBot(bot_token)
-        self.max_attempts = 3
         self.authority()
         self.setup_handlers()
+        self.key_list = []
+        self.get_keys()
+        self.address = []
 
     def authority(self):
         self.telegram_authority = requests.get("http://127.0.0.1:8080/settings/telegram_authority").text
         names = json.loads(self.telegram_authority)
-        print(names)
         return names
 
     def setup_handlers(self):
@@ -47,29 +48,49 @@ class TelegramBot:
         @self.bot.message_handler(func=lambda message: message.text == 'Show Services')
         def show_services(message):
             markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-            item_services = telebot.types.KeyboardButton('Services')
-            item_sensors = telebot.types.KeyboardButton('Sensors')
-            item_thresholds = telebot.types.KeyboardButton('Thresholds')
-            markup.add(item_services, item_sensors, item_thresholds)
+            buttonDict = []
+            for item in self.key_list:
+                button = telebot.types.KeyboardButton(item)
+                buttonDict.append(button)
+            backButton = telebot.types.KeyboardButton('Go Back')
+            markup.add(*buttonDict)
+            markup.add(backButton)
+
             self.bot.send_message(message.chat.id, "What information would you like to see?",
                                   reply_markup=markup)
 
-        @self.bot.message_handler(func=lambda message: message.text == 'Services')
+        @self.bot.message_handler(func=lambda message: message)
         def handle_services(message):
-            print(message.text)
-            services_data = self.get_catalog_data('settings/services')
-            if services_data:
-                self.bot.send_message(message.chat.id, f"Services:\n{json.dumps(services_data, indent=2)}")
-            else:
-                self.bot.send_message(message.chat.id, "Failed to fetch services information")
+            if message.text in self.key_list:
+                self.address.append(message.text)
+                print(self.address)
+                end_point = "/".join(self.address)
+                print(end_point)
+                services_data = self.get_catalog_data(end_point)
+                print("message.text", message.text)
+                if services_data:
+                    print("services_data", services_data)
+                    if isinstance(services_data, dict):
+                        self.key_list.clear()
+                        for key in services_data:
+                            self.key_list.append(key)
+                        print("key_list", self.key_list)
+                        show_services(message)
+                    else:
+                        self.bot.send_message(message.chat.id,
+                                              f"{message.text}:\n{json.dumps(services_data, indent=2)}")
 
-        @self.bot.message_handler(func=lambda message: message.text == 'Sensors')
-        def handle_sensors(message):
-            sensors_data = self.get_catalog_data('sensors')
-            if sensors_data:
-                self.bot.send_message(message.chat.id, f"Sensors:\n{json.dumps(sensors_data, indent=2)}")
-            else:
-                self.bot.send_message(message.chat.id, "Failed to fetch sensors information")
+                else:
+                    self.bot.send_message(message.chat.id, "Failed to fetch services information")
+            elif message.text == "Go Back" and len(self.address) > 0:
+                self.address.pop()
+                end_point = "/".join(self.address)
+                services_data = self.get_catalog_data(end_point)
+                if services_data:
+                    self.key_list.clear()
+                    for key in services_data:
+                        self.key_list.append(key)
+                    show_services(message)
 
         @self.bot.message_handler(func=lambda message: message.text == 'Thresholds')
         def handle_thresholds(message):
@@ -111,23 +132,33 @@ class TelegramBot:
             self.bot.send_chat_action(message.chat.id, "typing")
             # self.bot.reply_to(message, "hello")
 
-            self.bot.send_message(message.chat.id, "Please type the new threshold:", reply_markup=telebot.types.ForceReply())
+            self.bot.send_message(message.chat.id, "Please type the new threshold:",
+                                  reply_markup=telebot.types.ForceReply())
 
         @self.bot.message_handler(func=lambda message: True, content_types=['text'])
         def handle_message(message):
             if message.reply_to_message:
                 new_threshold = message.text
 
-
                 self.bot.send_message(message.chat.id, f"New threshold saved as: {new_threshold}")
 
-        #TODO: change the threshold
+        # TODO: change the threshold
 
-                # self.bot.send_message(message.chat.id, f"Services:\n{json.dumps(services_data, indent=2)}")
+        # self.bot.send_message(message.chat.id, f"Services:\n{json.dumps(services_data, indent=2)}")
 
-                # self.bot.send_message(message.chat.id, "Failed to fetch services information")
+        # self.bot.send_message(message.chat.id, "Failed to fetch services information")
 
-
+    def get_keys(self):
+        try:
+            response = requests.get(f"http://127.0.0.1:8080/")
+            if response.status_code == 200:
+                data = requests.get("http://127.0.0.1:8080/").json()
+                for key in data:
+                    self.key_list.append(key)
+                return response.json()
+        except Exception as e:
+            print(f"Error fetching information:", str(e))
+        return None
 
     def get_catalog_data(self, endpoint):
         try:
@@ -138,14 +169,15 @@ class TelegramBot:
             print(f"Error fetching {endpoint} information:", str(e))
         return None
 
-    def put_catalog_data(self, endpoint, value):
+    def put_catalog_data(self, data):
+        uri = "http://127.0.0.1:8080"
         try:
-            body = json.dumps(value)
-            response = requests.put(f"http://127.0.0.1:8080/{endpoint}", data=body)
+            body = {"address": self.address, "data": data}
+            response = requests.put(uri, json=body)
             if response.status_code == 200:
                 return response.json()
         except Exception as e:
-            print(f"Error fetching {endpoint} information:", str(e))
+            print(f"Error fetching information:", str(e))
         return None
 
     def start(self):
