@@ -12,6 +12,7 @@ class TelegramBot:
         self.key_list = []
         self.get_keys()
         self.address = []
+        self.services_data = None
 
     def authority(self):
         self.telegram_authority = requests.get("http://127.0.0.1:8080/settings/telegram_authority").text
@@ -44,9 +45,11 @@ class TelegramBot:
                 buttonDict.append(button)
             backButton = telebot.types.KeyboardButton('Go Back')
             markup.add(*buttonDict)
+            if "stations" in self.address:
+                addButton = telebot.types.KeyboardButton('Add')
+                markup.add(addButton)
             markup.add(backButton)
-
-            self.bot.send_message(message.chat.id, "What information would you like to see?",
+            self.bot.send_message(message.chat.id, "Choose the information you would like to see!",
                                   reply_markup=markup)
 
         @self.bot.message_handler(func=lambda message: message)
@@ -54,16 +57,16 @@ class TelegramBot:
             if message.text in self.key_list:
                 self.address.append(message.text)
                 end_point = "/".join(self.address)
-                services_data = self.get_catalog_data(end_point)
-                if services_data:
-                    if isinstance(services_data, dict):
+                self.services_data = self.get_catalog_data(end_point)
+                if self.services_data:
+                    if isinstance(self.services_data, dict):
                         self.key_list.clear()
-                        for key in services_data:
+                        for key in self.services_data:
                             self.key_list.append(key)
                         show_services(message)
                     else:
                         self.bot.send_message(message.chat.id,
-                                              f"{message.text}:\n{json.dumps(services_data, indent=2)}")
+                                              f"{message.text}:\n{json.dumps(self.services_data, indent=2)}")
                         handle_edit(message)
 
                 else:
@@ -79,26 +82,61 @@ class TelegramBot:
                     show_services(message)
 
             elif message.text == "Edit":
-                self.bot.send_message(message.chat.id, "Please type the new value:",
+                self.bot.send_message(message.chat.id, f"Please type the new value instead of {self.services_data}:",
                                       reply_markup=telebot.types.ForceReply())
 
+            elif message.reply_to_message and message.reply_to_message.text == f"Please type the new value instead of {self.services_data}:":
+                # try:
+                if isinstance(self.services_data, list):
+                    self.services_data.append(str(message.text))
+                    new_value = self.services_data
+
+                elif isinstance(self.services_data, int):
+                    if int(message.text):
+                        new_value = int(message.text)
+                        print("it is int")
+                        print("type is: ", type(self.services_data))
+                        print(self.address)
+                    else:
+                        raise ValueError(f"Unsupported data type: {message.text}")
+                        pass
+                elif isinstance(self.services_data, float):
+                    new_value = float(message.text)
+                elif isinstance(self.services_data, str):
+                    new_value = str(message.text)
+                    print("it is str")
+                else:
+                    raise ValueError(f"Unsupported data type: {message.text}")
+
+                self.put_catalog_data(new_value)
+                self.bot.send_message(message.reply_to_message.chat.id, f"Value has been changed to {new_value}")
+                message.text = "Go Back"
+                handle_services(message)
+
             elif message.reply_to_message and message.reply_to_message.text == "Please type the new value:":
-                try:
-                    new_value = int(message.text)
-                    self.put_catalog_data(new_value)
-                    self.bot.send_message(message.reply_to_message.chat.id, f"Value has been changed to {new_value}")
-                except ValueError:
-                    self.put_catalog_data(message.text)
-                    self.bot.send_message(message.reply_to_message.chat.id, f"Value has been changed to {message.text}")
+                while True:
+                    try:
+                        new_value = type(self.services_data)(message.text)
+                        self.put_catalog_data(new_value)
+                        self.bot.send_message(message.reply_to_message.chat.id,
+                                              f"Value has been changed to {new_value}")
+                        break
+                    except (ValueError, TypeError):
+                        self.bot.send_message(
+                            message.reply_to_message.chat.id,
+                            f"Error: Invalid input or incompatible data type. Please provide a valid {type(self.services_data).__name__} value."
+                        )
+                        # Prompt the user again for a valid value
+                        self.bot.send_message(message.reply_to_message.chat.id, "Please type the new value:")
 
                 message.text = "Go Back"
                 handle_services(message)
 
             elif message.text == "Add":
-                self.bot.send_message(message.chat.id, "Please add the value:",
+                self.bot.send_message(message.chat.id, "Please add the value in dictionary format:",
                                       reply_markup=telebot.types.ForceReply())
 
-            elif message.reply_to_message and message.reply_to_message.text == "Please add the value:":
+            elif message.reply_to_message and message.reply_to_message.text == "Please add the value in dictionary format:":
                 try:
                     new_value = int(message.text)
                     self.put_catalog_data(new_value)
@@ -115,9 +153,17 @@ class TelegramBot:
             markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
             backButton = telebot.types.KeyboardButton('Go Back')
             editButton = telebot.types.KeyboardButton('Edit')
-            addButton = telebot.types.KeyboardButton('Add')
-            markup.add(editButton, addButton, backButton)
+            markup.add(editButton, backButton)
             self.bot.send_message(message.chat.id, "Do you want to edit this value?",
+                                  reply_markup=markup)
+
+        @self.bot.message_handler(func=lambda message: message.text == 'Add')
+        def handle_add(message):
+            markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+            backButton = telebot.types.KeyboardButton('Go Back')
+            addButton = telebot.types.KeyboardButton('Add')
+            markup.add(addButton, backButton)
+            self.bot.send_message(message.chat.id, "Do you want to add new information?",
                                   reply_markup=markup)
 
     def get_keys(self):
@@ -159,15 +205,12 @@ class TelegramBot:
 
 
 # TODO: set threshold by telegram bot
-# TODO: show information to user in a friendly manner
 
 if __name__ == "__main__":
     try:
-        # token_uri = "http://127.0.0.1:8080/settings/telegram_token"
-        # bot_token = requests.get(token_uri).text
-        bot_token = "6604931438:AAFQtXjW60brIofOhH0zUQKcMZDZByTgiQ0"
-        # print(bot_token)
-        # time.sleep(1)
+        token_uri = "http://127.0.0.1:8080/settings/telegram_token"
+        bot_token = requests.get(token_uri).json()
+        time.sleep(1)
         bot_instance = TelegramBot(bot_token)
         bot_instance.start()
     except Exception as e:

@@ -1,7 +1,9 @@
 {
-    "projectOwner": "hhh",
-    "projectName": "SmartBusStation",
-    "lastModified": "2023-12-18 15:05:40",
+    "information": {
+        "projectOwner": "Group 3",
+        "projectName": "SmartBusStation",
+        "lastModified": "2023-12-18 15:05:40"
+    },
     "settings": {
         "telegram_token": "6604931438:AAFQtXjW60brIofOhH0zUQKcMZDZByTgiQ0",
         "telegram_authority": [
@@ -9,12 +11,14 @@
             "saeid",
             "masumeh",
             "pietro",
-            "m"
+            "m",
+            "lorenzo",
+            "jalal"
         ],
         "services": {
             "REST": {
                 "service_id": "actuator_server",
-                "uri": "http://127.0.0.1:9090/"
+                "uri": "http://127.0.0.1:8080/"
             },
             "MQTT": {
                 "publishers": {
@@ -41,8 +45,8 @@
                         "sensor_id": "temp_sen_id_s1_1",
                         "unit": "cel",
                         "sensor_topic": "smartStation/station_1/temperature/temp_1",
-                        "value": 6,
-                        "last_update": "2023-12-18 15:05:40"
+                        "value": 2,
+                        "last_update": "2023-12-21 19:31:30"
                     }
                 },
                 "humidity": {
@@ -52,7 +56,7 @@
                         "unit": "%",
                         "sensor_topic": "smartStation/station_1/humidity/humid_1",
                         "value": 36,
-                        "last_update": "2023-12-18 15:05:40"
+                        "last_update": "2023-12-21 19:31:30"
                     }
                 },
                 "motion": {
@@ -61,8 +65,8 @@
                         "sensor_id": "motion_sen_id_s1_1",
                         "unit": "bol",
                         "sensor_topic": "smartStation/station_1/motion/motion_1",
-                        "value": 1,
-                        "last_update": "2023-12-18 15:05:40"
+                        "value": 0,
+                        "last_update": "2023-12-21 19:31:30"
                     }
                 },
                 "passenger_IN": {
@@ -72,7 +76,7 @@
                         "unit": "int",
                         "sensor_topic": "smartStation/station_1/passenger_IN/pass_IN_1",
                         "value": 0,
-                        "last_update": "2023-12-18 15:05:40"
+                        "last_update": "2023-12-21 19:31:30"
                     }
                 },
                 "passenger_OUT": {
@@ -81,23 +85,27 @@
                         "sensor_id": "pass_OUT_sen_id_s1_1",
                         "unit": "int",
                         "sensor_topic": "smartStation/station_1/passenger_OUT/pass_OUT_1",
-                        "value": 4,
-                        "last_update": "2023-12-18 15:05:40"
+                        "value": 2,
+                        "last_update": "2023-12-21 19:31:30"
                     }
                 }
             },
             "device_status": {
+                "light": "on",
                 "cooler": "off",
                 "heater": "on",
-                "dehumidifier": "on",
-                "light": "on"
+                "dehumidifier": "on"
             },
             "threshold": {
-                "humidity": 25,
-                "temperature_cold": 19,
+                "humidity": 30,
+                "temperature_cold": 23,
                 "temperature_hot": 27
             },
-            "station_topic": "smartStation/station_1/#"
+            "station_topic": "smartStation/station_1/#",
+            "REST": {
+                "service_id": "actuator_server_station_1",
+                "uri": "http://127.0.0.1:9090/station_1"
+            }
         },
         "station_2": {
             "sensors": {
@@ -163,7 +171,11 @@
                 "temperature_cold": 19,
                 "temperature_hot": 27
             },
-            "station_topic": "smartStation/station_2/#"
+            "station_topic": "smartStation/station_2/#",
+            "REST": {
+                "service_id": "actuator_server_station_2",
+                "uri": "http://127.0.0.1:9090/station_2"
+            }
         }
     }
 }

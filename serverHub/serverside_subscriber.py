@@ -40,6 +40,7 @@ if __name__ == "__main__":
     sensorsSubscriber = SensorsSubscriber(clientID, topic, broker, port)
     sensorsSubscriber.run()
 
+
     # print(sensorsSubscriber.name, sensorsSubscriber.value)
 
     while True:
