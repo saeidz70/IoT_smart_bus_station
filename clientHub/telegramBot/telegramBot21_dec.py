@@ -43,12 +43,14 @@ class TelegramBot:
             for item in self.key_list:
                 button = telebot.types.KeyboardButton(item)
                 buttonDict.append(button)
-            backButton = telebot.types.KeyboardButton('Go Back')
             markup.add(*buttonDict)
+            if len(self.address) > 0:
+                backButton = telebot.types.KeyboardButton('Go Back')
+                markup.add(backButton)
             if "stations" in self.address:
                 addButton = telebot.types.KeyboardButton('Add')
                 markup.add(addButton)
-            markup.add(backButton)
+
             self.bot.send_message(message.chat.id, "Choose the information you would like to see!",
                                   reply_markup=markup)
 
@@ -71,15 +73,16 @@ class TelegramBot:
 
                 else:
                     self.bot.send_message(message.chat.id, "Failed to fetch services information")
-            elif message.text == "Go Back" and len(self.address) > 0:
-                self.address.pop()
-                end_point = "/".join(self.address)
-                services_data = self.get_catalog_data(end_point)
-                if services_data:
-                    self.key_list.clear()
-                    for key in services_data:
-                        self.key_list.append(key)
-                    show_services(message)
+            elif message.text == "Go Back" or message.text == "/go_back":
+                if len(self.address) > 0:
+                    self.address.pop()
+                    end_point = "/".join(self.address)
+                    services_data = self.get_catalog_data(end_point)
+                    if services_data:
+                        self.key_list.clear()
+                        for key in services_data:
+                            self.key_list.append(key)
+                        show_services(message)
 
             elif message.text == "Edit":
                 self.bot.send_message(message.chat.id, f"Please type the new value instead of {self.services_data}:",

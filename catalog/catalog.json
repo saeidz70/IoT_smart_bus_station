@@ -91,7 +91,7 @@
                 }
             },
             "device_status": {
-                "light": "on",
+                "light": "off",
                 "cooler": "off",
                 "heater": "on",
                 "dehumidifier": "on"
