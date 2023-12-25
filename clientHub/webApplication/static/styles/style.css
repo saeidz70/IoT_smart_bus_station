@@ -6,7 +6,6 @@
 
 body {
     padding: 2rem;
-    background-color: #333;
     color: whitesmoke;
     min-height: 100vh;
     display: flex;
@@ -14,10 +13,19 @@ body {
     align-items: center;
     gap: 2rem;
     font-size: 2rem;
+    background: url('image_1.jpeg') center/cover fixed no-repeat;
+    backdrop-filter: blur(10px);
 }
 
-input, button {
-    font-size: 2rem;
+select, button {
+    font-size: 1rem;
     padding: 1rem;
     border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+select {
+    width: 50%;
+    max-width: 300px;
 }

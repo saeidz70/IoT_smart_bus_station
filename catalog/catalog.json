@@ -45,8 +45,8 @@
                         "sensor_id": "temp_sen_id_s1_1",
                         "unit": "cel",
                         "sensor_topic": "smartStation/station_1/temperature/temp_1",
-                        "value": 2,
-                        "last_update": "2023-12-21 19:31:30"
+                        "value": 7,
+                        "last_update": "2023-12-25 14:09:27"
                     }
                 },
                 "humidity": {
@@ -55,8 +55,8 @@
                         "sensor_id": "humid_sen_id_s1_1",
                         "unit": "%",
                         "sensor_topic": "smartStation/station_1/humidity/humid_1",
-                        "value": 36,
-                        "last_update": "2023-12-21 19:31:30"
+                        "value": 43,
+                        "last_update": "2023-12-25 14:09:27"
                     }
                 },
                 "motion": {
@@ -65,8 +65,8 @@
                         "sensor_id": "motion_sen_id_s1_1",
                         "unit": "bol",
                         "sensor_topic": "smartStation/station_1/motion/motion_1",
-                        "value": 0,
-                        "last_update": "2023-12-21 19:31:30"
+                        "value": 1,
+                        "last_update": "2023-12-25 14:09:27"
                     }
                 },
                 "passenger_IN": {
@@ -76,7 +76,7 @@
                         "unit": "int",
                         "sensor_topic": "smartStation/station_1/passenger_IN/pass_IN_1",
                         "value": 0,
-                        "last_update": "2023-12-21 19:31:30"
+                        "last_update": "2023-12-25 14:09:27"
                     }
                 },
                 "passenger_OUT": {
@@ -85,13 +85,13 @@
                         "sensor_id": "pass_OUT_sen_id_s1_1",
                         "unit": "int",
                         "sensor_topic": "smartStation/station_1/passenger_OUT/pass_OUT_1",
-                        "value": 2,
-                        "last_update": "2023-12-21 19:31:30"
+                        "value": 3,
+                        "last_update": "2023-12-25 14:09:27"
                     }
                 }
             },
             "device_status": {
-                "light": "off",
+                "light": "on",
                 "cooler": "off",
                 "heater": "on",
                 "dehumidifier": "on"

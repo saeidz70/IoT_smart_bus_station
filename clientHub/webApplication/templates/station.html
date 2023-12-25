@@ -13,13 +13,18 @@
     <p>Temperature is {{ temperature }} &deg;</p>
     <p>Humidity is {{ humidity }} &percnt;</p>
     <p>Device status is:  </p>
-    <p>Cooler: {{ cooler }}</p>
-    <p>Heater: {{ heater }}</p>
-    <p>Dehumidifier: {{ dehumidifier }}</p>
-    <p>Light: {{ light }}</p>
+    <p><small>Cooler: {{ cooler }}</small></p>
+    <p><small>Heater: {{ heater }}</small></p>
+    <p><small>Dehumidifier: {{ dehumidifier }}</small></p>
+    <p><small>Light: {{ light }}</small></p>
 
     <form action="/station">
-        <label for="station"></label><input type="text" name="station" id="station" placeholder="Enter a station" />
+        <label for="station">Choose a station:</label>
+        <select name="station" id="station">
+            <option value="" disabled selected>Choose</option>
+            <option value="station_1">Station 1</option>
+            <option value="station_2">Station 2</option>
+        </select>
         <button type="submit">Submit</button>
     </form>
 </body>

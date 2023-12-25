@@ -12,7 +12,12 @@
     <h1>Not Found</h1>
     <h2>Try Again?</h2>
     <form action="/station">
-        <label for="station"></label><input type="text" name="station" id="station" placeholder="Enter a URI" />
+        <label for="station">Choose a station:</label>
+        <select name="station" id="station">
+            <option value="" disabled selected>Choose</option>
+            <option value="station_1">Station 1</option>
+            <option value="station_2">Station 2</option>
+        </select>
         <button type="submit">Submit</button>
     </form>
 </body>
