@@ -1,0 +1,24 @@
+{
+    "station_1": [
+        {
+            "timestamp": 1703515410.390621,
+            "sensor_name": "temperature",
+            "sensor_value": 7
+        },
+        {
+            "timestamp": 1703515455.519049,
+            "sensor_name": "crowd",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1703515460.566519,
+            "sensor_name": "temperature",
+            "sensor_value": 7
+        },
+        {
+            "timestamp": 1703515465.59467,
+            "sensor_name": "humidity",
+            "sensor_value": 53
+        }
+    ]
+}

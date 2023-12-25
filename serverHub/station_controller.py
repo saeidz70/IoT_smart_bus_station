@@ -1,4 +1,6 @@
 import time
+from datetime import datetime
+
 import requests
 from mqtt.MyMQTT import *
 import json
@@ -9,11 +11,11 @@ class StationController:
         self.client = MyMQTT(clientID, broker, port, self)
         self.client.start()
         self.command = {}
-        self.catalog_counter = 0
-        self.data_counter = 0
-        self.command_counter = 0
-        self.sensor_motion = 0
+        self.sensor_temperature = 0
+        self.sensor_humidity = 0
+        self.passenger_OUT = 0
         self.passenger_IN = 0
+        self.sensor_motion = 0
         self.uri_actuator = None
 
     def subscribe(self, topic):
@@ -37,8 +39,6 @@ class StationController:
         except Exception as e:
             print(f"Error fetching threshold information:", str(e))
         return None
-
-    # TODO: update data from serverside_subscriber
 
     def notify(self, topic, message):
         topic_notify = topic.split("/")[1]
@@ -77,6 +77,7 @@ class StationController:
             self.passenger_OUT = notify_value[2]
             print("Passenger out sensor", self.passenger_OUT)
             self.light_control(notify_value)
+        self.save_data(notify_value)
 
     def temp_control(self, notify_value):
         print("This is temp_control")
@@ -149,6 +150,27 @@ class StationController:
         Response code: {response.status_code}\n
         Response content: {response.text}\n
         '''
+
+    def save_data(self, notify_value):
+        myTime = datetime.timestamp(datetime.now())
+        data = {"timestamp": myTime, "sensor_name": notify_value[1], "sensor_value": notify_value[2]}
+        if notify_value[0] == "station_1":
+            filename = 'database/database_station_1.json'
+            with open(filename, 'r+') as file:
+                file_data = json.load(file)
+                file_data["station_1"].append(data)
+                file.seek(0)
+                json.dump(file_data, file, indent=4)
+            print(file_data)
+        elif notify_value[0] == "station_2":
+            filename = 'database/database_station_2.json'
+            with open(filename, 'r+') as file:
+                file_data = json.load(file)
+                file_data["station_2"].append(data)
+                file.seek(0)
+                json.dump(file_data, file, indent=4)
+            print(file_data)
+        print("save data", notify_value)
 
 
 if __name__ == "__main__":
