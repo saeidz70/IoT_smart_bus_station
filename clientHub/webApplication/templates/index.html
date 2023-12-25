@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Catalog Data</title>
+    <title>Get station Data </title>
     <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet" />
 </head>
 
 <body>
-    <h1>Get Catalog Data<</h1>
-    <form action="/uri">
-        <input type="text" name="uri" id="uri" placeholder="Enter a URI" />
+    <h1>Get Station Data</h1>
+    <form action="/station">
+        <label for="station"></label><input type="text" name="station" id="station" placeholder="Enter a url" />
         <button type="submit">Submit</button>
     </form>
 </body>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ station_name }} Status </title>
+    <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet" />
+</head>
+
+<body>
+    <h1>{{ station_name }} Status </h1>
+    <p>Temperature is {{ temperature }} &deg;</p>
+    <p>Humidity is {{ humidity }} &percnt;</p>
+    <p>Device status is:  </p>
+    <p>Cooler: {{ cooler }}</p>
+    <p>Heater: {{ heater }}</p>
+    <p>Dehumidifier: {{ dehumidifier }}</p>
+    <p>Light: {{ light }}</p>
+
+    <form action="/station">
+        <label for="station"></label><input type="text" name="station" id="station" placeholder="Enter a station" />
+        <button type="submit">Submit</button>
+    </form>
+</body>
+
+</html>
