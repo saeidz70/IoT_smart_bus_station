@@ -14,7 +14,6 @@ def index():
 @app.route('/station')
 def get_station():
     station = request.args.get('station')
-    print("station is ", station)
 
     if not bool(station.strip()):
         station = "station_1"

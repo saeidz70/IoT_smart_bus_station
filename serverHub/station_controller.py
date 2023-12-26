@@ -1,6 +1,5 @@
 import time
 from datetime import datetime
-
 import requests
 from mqtt.MyMQTT import *
 import json
@@ -43,73 +42,53 @@ class StationController:
     def notify(self, topic, message):
         topic_notify = topic.split("/")[1]
         data = json.loads(json.loads(message))
-        print("Notification", data)
-        print(topic)
         name = data["e"][0]["n"]
         value = data["e"][0]["value"]
         notify_value = [topic_notify, name, value]
-        print("notify_value", notify_value)
         self.update_data(notify_value)
 
     def update_data(self, notify_value):
         if notify_value[1] == "temperature":
             self.sensor_temperature = notify_value[2]
-            print("Temperature sensor", self.sensor_temperature)
-            print("notify_value from update_data", notify_value)
             self.temp_control(notify_value)
 
         elif notify_value[1] == "humidity":
             self.sensor_humidity = notify_value[2]
-            print("humidity sensor", self.sensor_humidity)
             self.humidity_control(notify_value)
 
         elif notify_value[1] == "crowd":
             self.sensor_motion = notify_value[2]
-            print("Motion sensor", self.sensor_motion)
             self.light_control(notify_value)
 
         elif notify_value[1] == "passenger_in":
             self.passenger_IN = notify_value[2]
-            print("Passenger in sensor", self.passenger_IN)
             self.light_control(notify_value)
 
         elif notify_value[1] == "passenger_out":
             self.passenger_OUT = notify_value[2]
-            print("Passenger out sensor", self.passenger_OUT)
             self.light_control(notify_value)
         self.save_data(notify_value)
 
     def temp_control(self, notify_value):
-        print("This is temp_control")
         if notify_value[0] == list(self.station_threshold.keys())[0]:
-            print("This is temp_control in the if condition, value :", self.sensor_temperature, "threshold_H:",
-                  self.temperature_hot_threshold)
 
             if self.sensor_temperature > self.temperature_hot_threshold:
-                # print("This is temp_control in the if condition, value :", self.sensor_temperature, "threshold_H:",self.sensor_temperature)
                 self.command["cooler"] = "on"
                 self.command["heater"] = "off"
-                print("temp_control 1 if", self.command, notify_value[0])
-            elif self.sensor_temperature < self.temperature_cold_threshold:
-                # print("This is temp_control in the if condition, value :", self.sensor_temperature, "threshold_C:",self.sensor_temperature)
 
+            elif self.sensor_temperature < self.temperature_cold_threshold:
                 self.command["cooler"] = "off"
                 self.command["heater"] = "on"
-                print("temp_control 2 if", self.command, notify_value[0])
-
 
             else:
                 self.command["cooler"] = "off"
                 self.command["heater"] = "off"
-                print("temp_control 3 if", self.command, notify_value[0])
 
             self.data_format(self.command, notify_value[0])
             return self.command, notify_value
 
     def humidity_control(self, notify_value):
-        print("This is humidity control")
         if notify_value[0] == list(self.station_threshold.keys())[0]:
-
             if self.sensor_humidity > self.humidity_threshold:
                 self.command["dehumidifier"] = "on"
             else:
@@ -118,9 +97,7 @@ class StationController:
             return self.command
 
     def light_control(self, notify_value):
-        print("this is light control")
         if notify_value[0] == list(self.station_threshold.keys())[0]:
-
             if self.sensor_motion == 1:
                 self.command["light"] = "on"
             elif self.passenger_IN != 0:
@@ -131,13 +108,10 @@ class StationController:
             return self.command
 
     def data_format(self, data, station):
-        print("data format line 1", data, station)
         if len(data) == 4:
             address = ["stations", station, "device_status"]
-            print("data format", address, data)
             message = {"address": address, "data": data}
             station_uri = self.uri_actuator.split("/")[-1]
-            print("station uri", station_uri)
             if station_uri == station:
                 self.put(self.uri_actuator, message)
 
@@ -161,7 +135,6 @@ class StationController:
                 file_data["station_1"].append(data)
                 file.seek(0)
                 json.dump(file_data, file, indent=4)
-            print(file_data)
         elif notify_value[0] == "station_2":
             filename = 'database/database_station_2.json'
             with open(filename, 'r+') as file:
@@ -169,8 +142,6 @@ class StationController:
                 file_data["station_2"].append(data)
                 file.seek(0)
                 json.dump(file_data, file, indent=4)
-            print(file_data)
-        print("save data", notify_value)
 
 
 if __name__ == "__main__":
@@ -189,7 +160,6 @@ if __name__ == "__main__":
     controller_station_1.subscribe(topic_s_1)
     controller_station_1.get_thresholds(station_threshold_s_1)
     controller_station_1.uri_actuator = uri_s_1
-    print(uri_s_1)
 
     # Station 2
     conf_s_2 = requests.get("http://127.0.0.1:8080/stations/station_2/services/MQTT/subscriber").json()
@@ -205,7 +175,6 @@ if __name__ == "__main__":
     controller_station_2.subscribe(topic_s_2)
     controller_station_2.get_thresholds(station_threshold_s_2)
     controller_station_2.uri_actuator = uri_s_2
-    print(uri_s_2)
 
     while True:
         time.sleep(30)

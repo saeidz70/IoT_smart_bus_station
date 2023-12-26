@@ -1,6 +1,4 @@
 from datetime import datetime
-import random
-
 import requests
 from scipy.stats import truncnorm
 

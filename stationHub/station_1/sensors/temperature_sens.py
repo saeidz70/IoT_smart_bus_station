@@ -47,17 +47,20 @@ class TemperatureSensor:
         # Generate temperature based on the truncated normal distribution
         temperature = int(distribution.rvs())
 
+        # for checking
+        # temperature = random.randint(0, 50)
+
         message = {"address":
                        ["stations", "station_1", "sensors", "temperature"],
 
                    "data": {
-                           "sensor_temp_1": {
-                            "sensor_name": "temperature_sensor_s1_1",
-                            "sensor_id": "temp_sen_id_s1_1",
-                            "unit": "cel",
-                            "sensor_topic": "smartStation/station_1/temperature/temp_1",
-                            "value": temperature,
-                            "last_update": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                       "sensor_temp_1": {
+                           "sensor_name": "temperature_sensor_s1_1",
+                           "sensor_id": "temp_sen_id_s1_1",
+                           "unit": "cel",
+                           "sensor_topic": "smartStation/station_1/temperature/temp_1",
+                           "value": temperature,
+                           "last_update": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                        }
                    }
                    }

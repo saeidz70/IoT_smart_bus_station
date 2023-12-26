@@ -10,9 +10,7 @@ class ActuatorServer:
     def PUT(self):
         body = cherrypy.request.body.read()
         json_body = json.loads(body)
-        print("json_body: ", json_body)
         uri = "http://127.0.0.1:8080/"
-        print("message: ", json_body)
         response = requests.put(uri, json=json_body)
         response_data = {
             "status_code": response.status_code,

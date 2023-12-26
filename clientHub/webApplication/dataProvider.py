@@ -10,7 +10,6 @@ class DataProvider(object):
         self.status["station"] = station
 
         response = requests.get(url).status_code
-        print(response)
         self.status["response"] = response
 
         if response == 200:

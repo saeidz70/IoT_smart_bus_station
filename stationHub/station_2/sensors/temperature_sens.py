@@ -5,7 +5,7 @@ from scipy.stats import truncnorm
 
 class TemperatureSensor:
     def __init__(self):
-        self.temperature_deviation = 1
+        self.temperature_deviation = 2
 
     def set_seasonal_limits(self, month):
         seasons = {
@@ -31,7 +31,7 @@ class TemperatureSensor:
         lower_limit, upper_limit = self.set_seasonal_limits(month)
 
         # Calculate the parameters for the truncated normal distribution
-        mean = (lower_limit + upper_limit) / 2
+        mean = (lower_limit + upper_limit) / 3
         a = (lower_limit - mean) / self.temperature_deviation
         b = (upper_limit - mean) / self.temperature_deviation
 
