@@ -1,13 +1,11 @@
 from datetime import datetime
-import random
-
 import requests
 from scipy.stats import truncnorm
 
 
 class TemperatureSensor:
     def __init__(self):
-        self.temperature_deviation = 1  # Adjust deviation as needed
+        self.temperature_deviation = 1
 
     def set_seasonal_limits(self, month):
         seasons = {
@@ -48,16 +46,16 @@ class TemperatureSensor:
         temperature = int(distribution.rvs())
 
         message = {"address":
-                       ["stations", "station_1", "sensors", "temperature"],
+                       ["stations", "station_2", "sensors", "temperature"],
 
                    "data": {
-                           "sensor_temp_1": {
-                            "sensor_name": "temperature_sensor_s1_1",
-                            "sensor_id": "temp_sen_id_s1_1",
-                            "unit": "cel",
-                            "sensor_topic": "smartStation/station_1/temperature/temp_1",
-                            "value": temperature,
-                            "last_update": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                       "sensor_temp_1": {
+                           "sensor_name": "temperature_sensor_s2_1",
+                           "sensor_id": "temp_sen_id_s2_1",
+                           "unit": "cel",
+                           "sensor_topic": "smartStation/station_2/temperature/temp_1",
+                           "value": temperature,
+                           "last_update": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                        }
                    }
                    }

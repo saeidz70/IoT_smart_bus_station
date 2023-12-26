@@ -1,13 +1,11 @@
 from datetime import datetime
-import random
-
 import requests
 from scipy.stats import truncnorm
 
 
 class HumiditySensor:
     def __init__(self):
-        self.humidity_deviation = 5  # Adjust deviation as needed
+        self.humidity_deviation = 5
 
     def set_seasonal_limits(self, month):
         seasons = {
@@ -43,14 +41,14 @@ class HumiditySensor:
         humidity = int(distribution.rvs())
 
         message = {"address":
-                       ["stations", "station_1", "sensors", "humidity"],
+                       ["stations", "station_2", "sensors", "humidity"],
 
                    "data": {
                        "sensor_humid_1": {
-                           "sensor_name": "humidity_sensor_s1_1",
-                           "sensor_id": "humid_sen_id_s1_1",
+                           "sensor_name": "humidity_sensor_s2_1",
+                           "sensor_id": "humid_sen_id_s2_1",
                            "unit": "%",
-                           "sensor_topic": "smartStation/station_1/humidity/humid_1",
+                           "sensor_topic": "smartStation/station_2/humidity/humid_1",
                            "value": humidity,
                            "last_update": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                        }

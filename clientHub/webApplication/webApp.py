@@ -1,5 +1,3 @@
-import time
-
 from flask import Flask, render_template, request
 from dataProvider import *
 from waitress import serve
@@ -20,7 +18,6 @@ def get_station():
 
     if not bool(station.strip()):
         station = "station_1"
-
 
     station_data = DataProvider().get_data(station)
 

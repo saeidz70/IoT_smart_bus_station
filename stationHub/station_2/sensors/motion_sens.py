@@ -13,14 +13,14 @@ class MotionSensor:
         motion = random.randint(0, 1)
 
         message = {"address":
-                       ["stations", "station_1", "sensors", "motion"],
+                       ["stations", "station_2", "sensors", "motion"],
 
                    "data": {
                        "sensor_motion_1": {
-                        "sensor_name": "motion_sensor_s1_1",
-                        "sensor_id": "motion_sen_id_s1_1",
+                        "sensor_name": "motion_sensor_s2_1",
+                        "sensor_id": "motion_sen_id_s2_1",
                         "unit": "bol",
-                        "sensor_topic": "smartStation/station_1/motion/motion_1",
+                        "sensor_topic": "smartStation/station_2/motion/motion_1",
                         "value": motion,
                         "last_update": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                        }

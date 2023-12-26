@@ -1,14 +1,13 @@
 import requests
-
 from mqtt.MyMQTT import *
 import time
 import json
 from datetime import datetime
-from stationHub.station_1.sensors.passenger_IN_sens import PassengerInSensor
-from stationHub.station_1.sensors.passenger_OUT_sens import PassengerOutSensor
-from stationHub.station_1.sensors.humidity_sens import HumiditySensor
-from stationHub.station_1.sensors.temperature_sens import TemperatureSensor
-from stationHub.station_1.sensors.motion_sens import MotionSensor
+from stationHub.station_2.sensors.passenger_IN_sens import PassengerInSensor
+from stationHub.station_2.sensors.passenger_OUT_sens import PassengerOutSensor
+from stationHub.station_2.sensors.humidity_sens import HumiditySensor
+from stationHub.station_2.sensors.temperature_sens import TemperatureSensor
+from stationHub.station_2.sensors.motion_sens import MotionSensor
 
 
 class SensorPublisher:
@@ -25,15 +24,15 @@ class SensorPublisher:
 
     def get_topic(self):
         self.temperature_topic = requests.get(
-            "http://127.0.0.1:8080/stations/station_1/sensors/temperature/sensor_temp_1/sensor_topic").json()
+            "http://127.0.0.1:8080/stations/station_2/sensors/temperature/sensor_temp_1/sensor_topic").json()
         self.humidity_topic = requests.get(
-            "http://127.0.0.1:8080/stations/station_1/sensors/humidity/sensor_humid_1/sensor_topic").json()
+            "http://127.0.0.1:8080/stations/station_2/sensors/humidity/sensor_humid_1/sensor_topic").json()
         self.passenger_IN_topic = requests.get(
-            "http://127.0.0.1:8080/stations/station_1/sensors/passenger_IN/sensor_pass_in_1/sensor_topic").json()
+            "http://127.0.0.1:8080/stations/station_2/sensors/passenger_IN/sensor_pass_in_1/sensor_topic").json()
         self.passenger_OUT_topic = requests.get(
-            "http://127.0.0.1:8080/stations/station_1/sensors/passenger_OUT/sensor_pass_out_1/sensor_topic").json()
+            "http://127.0.0.1:8080/stations/station_2/sensors/passenger_OUT/sensor_pass_out_1/sensor_topic").json()
         self.motion_topic = requests.get(
-            "http://127.0.0.1:8080/stations/station_1/sensors/motion/sensor_motion_1/sensor_topic").json()
+            "http://127.0.0.1:8080/stations/station_2/sensors/motion/sensor_motion_1/sensor_topic").json()
 
     def publish(self):
         while True:
@@ -83,7 +82,7 @@ class SensorPublisher:
 
 
 if __name__ == "__main__":
-    conf = requests.get("http://127.0.0.1:8080/settings/services/MQTT/publishers").json()
+    conf = requests.get("http://127.0.0.1:8080/stations/station_2/services/MQTT/publisher").json()
     print(conf)
     clientID = conf["client_id"]
     broker = conf["broker"]

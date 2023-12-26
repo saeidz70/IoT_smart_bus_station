@@ -175,23 +175,39 @@ class StationController:
 
 if __name__ == "__main__":
 
-    conf = requests.get("http://127.0.0.1:8080/settings/services/MQTT/subscribers").json()
-    clientID = conf["client_id"]
-    broker = conf["broker"]
-    port = conf["port"]
-
     # Station 1
-    topic = requests.get("http://127.0.0.1:8080/stations/station_1/station_topic").json()
-    station_threshold = "http://127.0.0.1:8080/stations/station_1/threshold"
-    uri = (requests.get("http://127.0.0.1:8080/stations/station_1/REST/uri")).json()
+    conf_s_1 = requests.get("http://127.0.0.1:8080/stations/station_1/services/MQTT/subscriber").json()
+    topic_s_1 = requests.get("http://127.0.0.1:8080/stations/station_1/station_topic").json()
+    station_threshold_s_1 = "http://127.0.0.1:8080/stations/station_1/threshold"
+    uri_s_1 = (requests.get("http://127.0.0.1:8080/stations/station_1/services/REST/uri")).json()
 
-    controller_station_1 = StationController(clientID, broker, port)
-    controller_station_1.subscribe(topic)
-    controller_station_1.get_thresholds(station_threshold)
-    controller_station_1.uri_actuator = uri
-    print(uri)
+    clientID_s_1 = conf_s_1["client_id"]
+    broker_s_1 = conf_s_1["broker"]
+    port_s_1 = conf_s_1["port"]
+
+    controller_station_1 = StationController(clientID_s_1, broker_s_1, port_s_1)
+    controller_station_1.subscribe(topic_s_1)
+    controller_station_1.get_thresholds(station_threshold_s_1)
+    controller_station_1.uri_actuator = uri_s_1
+    print(uri_s_1)
+
     # Station 2
+    conf_s_2 = requests.get("http://127.0.0.1:8080/stations/station_2/services/MQTT/subscriber").json()
+    topic_s_2 = requests.get("http://127.0.0.1:8080/stations/station_2/station_topic").json()
+    station_threshold_s_2 = "http://127.0.0.1:8080/stations/station_2/threshold"
+    uri_s_2 = (requests.get("http://127.0.0.1:8080/stations/station_2/services/REST/uri")).json()
+
+    clientID_s_2 = conf_s_2["client_id"]
+    broker_s_2 = conf_s_2["broker"]
+    port_s_2 = conf_s_2["port"]
+
+    controller_station_2 = StationController(clientID_s_2, broker_s_2, port_s_2)
+    controller_station_2.subscribe(topic_s_2)
+    controller_station_2.get_thresholds(station_threshold_s_2)
+    controller_station_2.uri_actuator = uri_s_2
+    print(uri_s_2)
 
     while True:
         time.sleep(30)
-        controller_station_1.get_thresholds(station_threshold)
+        controller_station_1.get_thresholds(station_threshold_s_1)
+        controller_station_2.get_thresholds(station_threshold_s_2)

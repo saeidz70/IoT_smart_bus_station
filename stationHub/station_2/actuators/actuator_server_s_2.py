@@ -6,9 +6,6 @@ import requests
 class ActuatorServer:
     exposed = True
 
-    def GET(self, *uri):
-        return
-
     @cherrypy.tools.json_out()
     def PUT(self):
         body = cherrypy.request.body.read()
@@ -36,7 +33,7 @@ if __name__ == '__main__':
             'tools.sessions.on': True
         }
     }
-    cherrypy.tree.mount(ActuatorServer(), '/station_1', conf)
-    cherrypy.config.update({'server.socket_port': 9090})
+    cherrypy.tree.mount(ActuatorServer(), '/station_2', conf)
+    cherrypy.config.update({'server.socket_port': 9020})
     cherrypy.engine.start()
     cherrypy.engine.block()

@@ -2,7 +2,7 @@
     "information": {
         "projectOwner": "Group 3",
         "projectName": "SmartBusStation",
-        "lastModified": "2023-12-18 15:05:40"
+        "lastModified": "2023-12-26 00:05:40"
     },
     "settings": {
         "telegram_token": "6604931438:AAFQtXjW60brIofOhH0zUQKcMZDZByTgiQ0",
@@ -45,8 +45,8 @@
                         "sensor_id": "temp_sen_id_s1_1",
                         "unit": "cel",
                         "sensor_topic": "smartStation/station_1/temperature/temp_1",
-                        "value": 7,
-                        "last_update": "2023-12-25 15:44:20"
+                        "value": 3,
+                        "last_update": "2023-12-26 00:57:30"
                     }
                 },
                 "humidity": {
@@ -55,8 +55,8 @@
                         "sensor_id": "humid_sen_id_s1_1",
                         "unit": "%",
                         "sensor_topic": "smartStation/station_1/humidity/humid_1",
-                        "value": 53,
-                        "last_update": "2023-12-25 15:44:20"
+                        "value": 47,
+                        "last_update": "2023-12-26 00:57:30"
                     }
                 },
                 "motion": {
@@ -66,7 +66,7 @@
                         "unit": "bol",
                         "sensor_topic": "smartStation/station_1/motion/motion_1",
                         "value": 1,
-                        "last_update": "2023-12-25 15:44:20"
+                        "last_update": "2023-12-26 00:57:30"
                     }
                 },
                 "passenger_IN": {
@@ -75,8 +75,8 @@
                         "sensor_id": "pass_IN_sen_id_s1_1",
                         "unit": "int",
                         "sensor_topic": "smartStation/station_1/passenger_IN/pass_IN_1",
-                        "value": 0,
-                        "last_update": "2023-12-25 15:44:20"
+                        "value": 2,
+                        "last_update": "2023-12-26 00:57:30"
                     }
                 },
                 "passenger_OUT": {
@@ -85,8 +85,8 @@
                         "sensor_id": "pass_OUT_sen_id_s1_1",
                         "unit": "int",
                         "sensor_topic": "smartStation/station_1/passenger_OUT/pass_OUT_1",
-                        "value": 0,
-                        "last_update": "2023-12-25 15:44:20"
+                        "value": 5,
+                        "last_update": "2023-12-26 00:57:30"
                     }
                 }
             },
@@ -102,9 +102,23 @@
                 "temperature_hot": 27
             },
             "station_topic": "smartStation/station_1/#",
-            "REST": {
-                "service_id": "actuator_server_station_1",
-                "uri": "http://127.0.0.1:9090/station_1"
+            "services": {
+                "REST": {
+                    "service_id": "actuator_server_station_1",
+                    "uri": "http://127.0.0.1:9010/station_1"
+                },
+                "MQTT": {
+                    "subscriber": {
+                        "client_id": "subscriber_station_1",
+                        "broker": "mqtt.eclipseprojects.io",
+                        "port": 1883
+                    },
+                    "publisher": {
+                        "client_id": "publisher_station_1",
+                        "broker": "mqtt.eclipseprojects.io",
+                        "port": 1883
+                    }
+                }
             }
         },
         "station_2": {
@@ -115,8 +129,8 @@
                         "sensor_id": "temp_sen_id_s2_1",
                         "unit": "cel",
                         "sensor_topic": "smartStation/station_2/temperature/temp_1",
-                        "value": 20,
-                        "last_update": "2023-12-01 12:28"
+                        "value": 3,
+                        "last_update": "2023-12-26 00:57:18"
                     }
                 },
                 "humidity": {
@@ -125,18 +139,18 @@
                         "sensor_id": "humid_sen_id_s2_1",
                         "unit": "%",
                         "sensor_topic": "smartStation/station_2/humidity/humid_1",
-                        "value": 25,
-                        "last_update": "2023-12-01 12:28"
+                        "value": 51,
+                        "last_update": "2023-12-26 00:57:18"
                     }
                 },
                 "motion": {
-                    "sensor_temp_1": {
+                    "sensor_motion_1": {
                         "sensor_name": "motion_sensor_s2_1",
                         "sensor_id": "motion_sen_id_s2_1",
                         "unit": "bol",
                         "sensor_topic": "smartStation/station_2/motion/motion_1",
                         "value": 0,
-                        "last_update": "2023-12-01 12:28"
+                        "last_update": "2023-12-26 00:57:18"
                     }
                 },
                 "passenger_IN": {
@@ -145,8 +159,8 @@
                         "sensor_id": "pass_IN_sen_id_s2_1",
                         "unit": "int",
                         "sensor_topic": "smartStation/station_2/passenger_IN/pass_IN_1",
-                        "value": 12,
-                        "last_update": "2023-12-01 12:28"
+                        "value": 0,
+                        "last_update": "2023-12-26 00:57:18"
                     }
                 },
                 "passenger_OUT": {
@@ -155,16 +169,16 @@
                         "sensor_id": "pass_OUT_sen_id_s2_1",
                         "unit": "int",
                         "sensor_topic": "smartStation/station_2/passenger_OUT/pass_OUT_1",
-                        "value": 6,
-                        "last_update": "2023-12-01 12:28"
+                        "value": 0,
+                        "last_update": "2023-12-26 00:57:18"
                     }
                 }
             },
             "device_status": {
                 "cooler": "off",
-                "heater": "off",
-                "dehumidifier": "off",
-                "light": "off"
+                "heater": "on",
+                "dehumidifier": "on",
+                "light": "on"
             },
             "threshold": {
                 "humidity": 25,
@@ -172,9 +186,23 @@
                 "temperature_hot": 27
             },
             "station_topic": "smartStation/station_2/#",
-            "REST": {
-                "service_id": "actuator_server_station_2",
-                "uri": "http://127.0.0.1:9090/station_2"
+            "services": {
+                "REST": {
+                    "service_id": "actuator_server_station_2",
+                    "uri": "http://127.0.0.1:9020/station_2"
+                },
+                "MQTT": {
+                    "subscriber": {
+                        "client_id": "subscriber_station_2",
+                        "broker": "mqtt.eclipseprojects.io",
+                        "port": 1883
+                    },
+                    "publisher": {
+                        "client_id": "publisher_station_2",
+                        "broker": "mqtt.eclipseprojects.io",
+                        "port": 1883
+                    }
+                }
             }
         }
     }

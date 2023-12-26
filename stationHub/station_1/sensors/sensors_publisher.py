@@ -83,7 +83,7 @@ class SensorPublisher:
 
 
 if __name__ == "__main__":
-    conf = requests.get("http://127.0.0.1:8080/settings/services/MQTT/publishers").json()
+    conf = requests.get("http://127.0.0.1:8080/stations/station_1/services/MQTT/publisher").json()
     print(conf)
     clientID = conf["client_id"]
     broker = conf["broker"]
