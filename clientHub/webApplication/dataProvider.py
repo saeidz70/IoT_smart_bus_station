@@ -11,9 +11,11 @@ class DataProvider(object):
 
         response = requests.get(url).status_code
         self.status["response"] = response
+        print(response)
 
         if response == 200:
             temperature_url = url + "/sensors/temperature/sensor_temp_1/value"
+            print(temperature_url)
             temperature = requests.get(temperature_url).json()
             self.status["temperature"] = temperature
 

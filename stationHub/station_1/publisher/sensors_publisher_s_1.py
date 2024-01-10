@@ -3,11 +3,11 @@ from mqtt.MyMQTT import *
 import time
 import json
 from datetime import datetime
-from stationHub.station_1.sensors.passenger_IN_sens import PassengerInSensor
-from stationHub.station_1.sensors.passenger_OUT_sens import PassengerOutSensor
-from stationHub.station_1.sensors.humidity_sens import HumiditySensor
-from stationHub.station_1.sensors.temperature_sens import TemperatureSensor
-from stationHub.station_1.sensors.motion_sens import MotionSensor
+from stationHub.station_1.publisher.sensors.passenger_IN_sens import PassengerInSensor
+from stationHub.station_1.publisher.sensors.passenger_OUT_sens import PassengerOutSensor
+from stationHub.station_1.publisher.sensors.humidity_sens import HumiditySensor
+from stationHub.station_1.publisher.sensors.temperature_sens import TemperatureSensor
+from stationHub.station_1.publisher.sensors.motion_sens import MotionSensor
 
 
 class SensorPublisher:
@@ -49,26 +49,26 @@ class SensorPublisher:
             motion_payload = self.create_sensor_payload("crowd", "d", motion)
 
             self.client.myPublish(self.temperature_topic, temperature_payload)
-            print(self.temperature_topic, temperature_payload)
+            print("topic is: ", self.temperature_topic, "data is: ", temperature_payload)
             requests.get(("https://api.thingspeak.com/update?api_key=PWKBSNME0EGGKW9Y&field1=" + str(temperature)), verify=False)
             time.sleep(5)
             self.client.myPublish(self.humidity_topic, humidity_payload)
-            print(self.humidity_topic, humidity_payload)
+            print("topic is: ", self.humidity_topic, "data is: ", humidity_payload)
             requests.get(("https://api.thingspeak.com/update?api_key=PWKBSNME0EGGKW9Y&field2=" + str(humidity)),
                          verify=False)
             time.sleep(5)
             self.client.myPublish(self.passenger_IN_topic, passenger_in_payload)
-            print(self.passenger_IN_topic, passenger_in_payload)
+            print("topic is: ", self.passenger_IN_topic, "data is: ", passenger_in_payload)
             requests.get(("https://api.thingspeak.com/update?api_key=PWKBSNME0EGGKW9Y&field4=" + str(passenger_in)),
                          verify=False)
             time.sleep(5)
             self.client.myPublish(self.passenger_OUT_topic, passenger_out_payload)
-            print(self.passenger_OUT_topic, passenger_out_payload)
+            print("topic is: ", self.passenger_OUT_topic, "data is: ", passenger_out_payload)
             requests.get(("https://api.thingspeak.com/update?api_key=PWKBSNME0EGGKW9Y&field5=" + str(temperature)),
                          verify=False)
             time.sleep(5)
             self.client.myPublish(self.motion_topic, motion_payload)
-            print(self.motion_topic, motion_payload)
+            print("topic is: ", self.motion_topic, "data is: ", motion_payload)
             requests.get(("https://api.thingspeak.com/update?api_key=PWKBSNME0EGGKW9Y&field3=" + str(motion)),
                          verify=False)
             time.sleep(5)
