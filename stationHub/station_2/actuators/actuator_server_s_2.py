@@ -10,6 +10,7 @@ class ActuatorServer:
     def PUT(self):
         body = cherrypy.request.body.read()
         json_body = json.loads(body)
+        # Actuator activate or deactivate a device in the station
         uri = "http://127.0.0.1:8080/"
         response = requests.put(uri, json=json_body)
         response_data = {

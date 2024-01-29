@@ -50,7 +50,8 @@ class SensorPublisher:
 
             self.client.myPublish(self.temperature_topic, temperature_payload)
             print("topic is: ", self.temperature_topic, "data is: ", temperature_payload)
-            requests.get(("https://api.thingspeak.com/update?api_key=PWKBSNME0EGGKW9Y&field1=" + str(temperature)), verify=False)
+            requests.get(("https://api.thingspeak.com/update?api_key=PWKBSNME0EGGKW9Y&field1=" + str(temperature)),
+                         verify=False)
             time.sleep(5)
             self.client.myPublish(self.humidity_topic, humidity_payload)
             print("topic is: ", self.humidity_topic, "data is: ", humidity_payload)

@@ -9,23 +9,10 @@ class CatalogAPI:
         self.file_name = "catalog.json"
         self.load_catalog()
 
-    def load_catalog(self):
-        try:
-            with open(self.file_name, "r") as f:
-                self.catalog = json.load(f)
-        except FileNotFoundError:
-            self.catalog = {}
-            self.save_catalog()
-
-    def save_catalog(self):
-        with open(self.file_name, "w") as f:
-            json.dump(self.catalog, f, indent=4)
-
     @cherrypy.tools.json_out()
     def GET(self, *uri):
         for key, value in self.catalog.items():
             if len(uri) == 0:
-                # welcome_message = ("This is a web service for Smart Bus Station. For more information please visit "our Github: https://github.com/saeidz70/IoT_smart_bus_station")
                 return self.catalog
 
             elif len(uri) == 1 and key == uri[0]:
@@ -272,6 +259,18 @@ class CatalogAPI:
                                                                                                          "Valid")
         else:
             raise cherrypy.HTTPError(400, "Wrong Request")
+
+    def load_catalog(self):
+        try:
+            with open(self.file_name, "r") as f:
+                self.catalog = json.load(f)
+        except FileNotFoundError:
+            self.catalog = {}
+            self.save_catalog()
+
+    def save_catalog(self):
+        with open(self.file_name, "w") as f:
+            json.dump(self.catalog, f, indent=4)
 
 
 if __name__ == "__main__":

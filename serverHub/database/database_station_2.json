@@ -3469,6 +3469,566 @@
             "timestamp": 1704887491.482444,
             "sensor_name": "temperature",
             "sensor_value": 5
+        },
+        {
+            "timestamp": 1704894651.022378,
+            "sensor_name": "passenger_in",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894656.344546,
+            "sensor_name": "passenger_out",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704894661.707068,
+            "sensor_name": "crowd",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894667.08991,
+            "sensor_name": "temperature",
+            "sensor_value": 7
+        },
+        {
+            "timestamp": 1704894672.44755,
+            "sensor_name": "humidity",
+            "sensor_value": 32
+        },
+        {
+            "timestamp": 1704894677.838255,
+            "sensor_name": "passenger_in",
+            "sensor_value": 4
+        },
+        {
+            "timestamp": 1704894683.178739,
+            "sensor_name": "passenger_out",
+            "sensor_value": 4
+        },
+        {
+            "timestamp": 1704894688.562459,
+            "sensor_name": "crowd",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704894693.976092,
+            "sensor_name": "temperature",
+            "sensor_value": 8
+        },
+        {
+            "timestamp": 1704894699.356155,
+            "sensor_name": "humidity",
+            "sensor_value": 33
+        },
+        {
+            "timestamp": 1704894704.722979,
+            "sensor_name": "passenger_in",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894710.067591,
+            "sensor_name": "passenger_out",
+            "sensor_value": 3
+        },
+        {
+            "timestamp": 1704894715.455415,
+            "sensor_name": "crowd",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704894720.843633,
+            "sensor_name": "temperature",
+            "sensor_value": 4
+        },
+        {
+            "timestamp": 1704894726.189865,
+            "sensor_name": "humidity",
+            "sensor_value": 32
+        },
+        {
+            "timestamp": 1704894731.529519,
+            "sensor_name": "passenger_in",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894736.910566,
+            "sensor_name": "passenger_out",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704894742.262469,
+            "sensor_name": "crowd",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894747.713746,
+            "sensor_name": "temperature",
+            "sensor_value": 8
+        },
+        {
+            "timestamp": 1704894753.040988,
+            "sensor_name": "humidity",
+            "sensor_value": 31
+        },
+        {
+            "timestamp": 1704894758.479781,
+            "sensor_name": "passenger_in",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894764.176986,
+            "sensor_name": "passenger_out",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894769.189719,
+            "sensor_name": "crowd",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704894774.582665,
+            "sensor_name": "temperature",
+            "sensor_value": 4
+        },
+        {
+            "timestamp": 1704894779.921617,
+            "sensor_name": "humidity",
+            "sensor_value": 33
+        },
+        {
+            "timestamp": 1704894785.25837,
+            "sensor_name": "passenger_in",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894790.608926,
+            "sensor_name": "passenger_out",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894795.939516,
+            "sensor_name": "crowd",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704894801.356663,
+            "sensor_name": "temperature",
+            "sensor_value": 2
+        },
+        {
+            "timestamp": 1704894806.726659,
+            "sensor_name": "humidity",
+            "sensor_value": 32
+        },
+        {
+            "timestamp": 1704894812.09431,
+            "sensor_name": "passenger_in",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894819.100065,
+            "sensor_name": "passenger_out",
+            "sensor_value": 4
+        },
+        {
+            "timestamp": 1704894824.474058,
+            "sensor_name": "crowd",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704894831.628179,
+            "sensor_name": "temperature",
+            "sensor_value": 7
+        },
+        {
+            "timestamp": 1704894840.764253,
+            "sensor_name": "humidity",
+            "sensor_value": 33
+        },
+        {
+            "timestamp": 1704894846.151588,
+            "sensor_name": "passenger_in",
+            "sensor_value": 3
+        },
+        {
+            "timestamp": 1704894851.529498,
+            "sensor_name": "passenger_out",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894856.894746,
+            "sensor_name": "crowd",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704894862.301443,
+            "sensor_name": "temperature",
+            "sensor_value": 7
+        },
+        {
+            "timestamp": 1704894869.931336,
+            "sensor_name": "humidity",
+            "sensor_value": 30
+        },
+        {
+            "timestamp": 1704894876.288794,
+            "sensor_name": "passenger_in",
+            "sensor_value": 4
+        },
+        {
+            "timestamp": 1704894881.63944,
+            "sensor_name": "passenger_out",
+            "sensor_value": 2
+        },
+        {
+            "timestamp": 1704894887.160247,
+            "sensor_name": "crowd",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704894892.592434,
+            "sensor_name": "temperature",
+            "sensor_value": 6
+        },
+        {
+            "timestamp": 1704894898.823046,
+            "sensor_name": "humidity",
+            "sensor_value": 31
+        },
+        {
+            "timestamp": 1704894906.760066,
+            "sensor_name": "passenger_in",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894913.641204,
+            "sensor_name": "passenger_out",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894929.881967,
+            "sensor_name": "crowd",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894935.592509,
+            "sensor_name": "temperature",
+            "sensor_value": 7
+        },
+        {
+            "timestamp": 1704894940.956737,
+            "sensor_name": "humidity",
+            "sensor_value": 30
+        },
+        {
+            "timestamp": 1704894946.310107,
+            "sensor_name": "passenger_in",
+            "sensor_value": 5
+        },
+        {
+            "timestamp": 1704894951.987518,
+            "sensor_name": "passenger_out",
+            "sensor_value": 3
+        },
+        {
+            "timestamp": 1704894957.333377,
+            "sensor_name": "crowd",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894962.755716,
+            "sensor_name": "temperature",
+            "sensor_value": 4
+        },
+        {
+            "timestamp": 1704894968.147842,
+            "sensor_name": "humidity",
+            "sensor_value": 32
+        },
+        {
+            "timestamp": 1704894973.572419,
+            "sensor_name": "passenger_in",
+            "sensor_value": 4
+        },
+        {
+            "timestamp": 1704894978.92615,
+            "sensor_name": "passenger_out",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894984.32408,
+            "sensor_name": "crowd",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704894989.729417,
+            "sensor_name": "temperature",
+            "sensor_value": 8
+        },
+        {
+            "timestamp": 1704894995.171494,
+            "sensor_name": "humidity",
+            "sensor_value": 31
+        },
+        {
+            "timestamp": 1704895000.527301,
+            "sensor_name": "passenger_in",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895005.866329,
+            "sensor_name": "passenger_out",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895011.249499,
+            "sensor_name": "crowd",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704895016.712153,
+            "sensor_name": "temperature",
+            "sensor_value": 3
+        },
+        {
+            "timestamp": 1704895022.163027,
+            "sensor_name": "humidity",
+            "sensor_value": 31
+        },
+        {
+            "timestamp": 1704895027.557988,
+            "sensor_name": "passenger_in",
+            "sensor_value": 5
+        },
+        {
+            "timestamp": 1704895032.955021,
+            "sensor_name": "passenger_out",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895038.396976,
+            "sensor_name": "crowd",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895043.898537,
+            "sensor_name": "temperature",
+            "sensor_value": 4
+        },
+        {
+            "timestamp": 1704895049.292727,
+            "sensor_name": "humidity",
+            "sensor_value": 31
+        },
+        {
+            "timestamp": 1704895054.680697,
+            "sensor_name": "passenger_in",
+            "sensor_value": 5
+        },
+        {
+            "timestamp": 1704895060.049521,
+            "sensor_name": "passenger_out",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895065.438976,
+            "sensor_name": "crowd",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704895070.996975,
+            "sensor_name": "temperature",
+            "sensor_value": 9
+        },
+        {
+            "timestamp": 1704895076.376977,
+            "sensor_name": "humidity",
+            "sensor_value": 32
+        },
+        {
+            "timestamp": 1704895081.784781,
+            "sensor_name": "passenger_in",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704895087.148014,
+            "sensor_name": "passenger_out",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895092.508981,
+            "sensor_name": "crowd",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895098.25218,
+            "sensor_name": "temperature",
+            "sensor_value": 8
+        },
+        {
+            "timestamp": 1704895103.649345,
+            "sensor_name": "humidity",
+            "sensor_value": 31
+        },
+        {
+            "timestamp": 1704895109.041423,
+            "sensor_name": "passenger_in",
+            "sensor_value": 2
+        },
+        {
+            "timestamp": 1704895114.388384,
+            "sensor_name": "passenger_out",
+            "sensor_value": 5
+        },
+        {
+            "timestamp": 1704895119.759572,
+            "sensor_name": "crowd",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895125.156622,
+            "sensor_name": "temperature",
+            "sensor_value": 6
+        },
+        {
+            "timestamp": 1704895130.542516,
+            "sensor_name": "humidity",
+            "sensor_value": 32
+        },
+        {
+            "timestamp": 1704895135.915208,
+            "sensor_name": "passenger_in",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895141.233831,
+            "sensor_name": "passenger_out",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704895146.630877,
+            "sensor_name": "crowd",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895152.091754,
+            "sensor_name": "temperature",
+            "sensor_value": 8
+        },
+        {
+            "timestamp": 1704895157.452635,
+            "sensor_name": "humidity",
+            "sensor_value": 33
+        },
+        {
+            "timestamp": 1704895162.803638,
+            "sensor_name": "passenger_in",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895168.249072,
+            "sensor_name": "passenger_out",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895173.932539,
+            "sensor_name": "crowd",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895180.379421,
+            "sensor_name": "temperature",
+            "sensor_value": 5
+        },
+        {
+            "timestamp": 1704895185.791294,
+            "sensor_name": "humidity",
+            "sensor_value": 30
+        },
+        {
+            "timestamp": 1704895191.197795,
+            "sensor_name": "passenger_in",
+            "sensor_value": 4
+        },
+        {
+            "timestamp": 1704895196.606017,
+            "sensor_name": "passenger_out",
+            "sensor_value": 3
+        },
+        {
+            "timestamp": 1704895202.420236,
+            "sensor_name": "crowd",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704895207.818885,
+            "sensor_name": "temperature",
+            "sensor_value": 8
+        },
+        {
+            "timestamp": 1704895213.229175,
+            "sensor_name": "humidity",
+            "sensor_value": 34
+        },
+        {
+            "timestamp": 1704895219.587692,
+            "sensor_name": "passenger_in",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895224.978806,
+            "sensor_name": "passenger_out",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895230.361351,
+            "sensor_name": "crowd",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895235.743824,
+            "sensor_name": "temperature",
+            "sensor_value": 6
+        },
+        {
+            "timestamp": 1704895241.11306,
+            "sensor_name": "humidity",
+            "sensor_value": 31
+        },
+        {
+            "timestamp": 1704895246.49715,
+            "sensor_name": "passenger_in",
+            "sensor_value": 1
+        },
+        {
+            "timestamp": 1704895251.837152,
+            "sensor_name": "passenger_out",
+            "sensor_value": 3
+        },
+        {
+            "timestamp": 1704895257.334518,
+            "sensor_name": "crowd",
+            "sensor_value": 0
+        },
+        {
+            "timestamp": 1704895262.735735,
+            "sensor_name": "temperature",
+            "sensor_value": 5
+        },
+        {
+            "timestamp": 1704895267.989939,
+            "sensor_name": "humidity",
+            "sensor_value": 30
+        },
+        {
+            "timestamp": 1704895273.367879,
+            "sensor_name": "passenger_in",
+            "sensor_value": 5
+        },
+        {
+            "timestamp": 1704895278.807787,
+            "sensor_name": "passenger_out",
+            "sensor_value": 2
         }
     ]
 }

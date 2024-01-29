@@ -11,7 +11,8 @@
             "saeid",
             "masumeh",
             "pietro",
-            "m"
+            "m",
+            "jalal"
         ]
     },
     "stations": {
@@ -23,8 +24,8 @@
                         "sensor_id": "temp_sen_id_s1_1",
                         "unit": "cel",
                         "sensor_topic": "smartStation/station_1/temperature/temp_1",
-                        "value": 6,
-                        "last_update": "2024-01-10 12:51:10"
+                        "value": 8,
+                        "last_update": "2024-01-10 15:38:52"
                     }
                 },
                 "humidity": {
@@ -33,8 +34,8 @@
                         "sensor_id": "humid_sen_id_s1_1",
                         "unit": "%",
                         "sensor_topic": "smartStation/station_1/humidity/humid_1",
-                        "value": 43,
-                        "last_update": "2024-01-10 12:51:10"
+                        "value": 38,
+                        "last_update": "2024-01-10 15:38:52"
                     }
                 },
                 "motion": {
@@ -43,8 +44,8 @@
                         "sensor_id": "motion_sen_id_s1_1",
                         "unit": "bol",
                         "sensor_topic": "smartStation/station_1/motion/motion_1",
-                        "value": 0,
-                        "last_update": "2024-01-10 12:51:10"
+                        "value": 1,
+                        "last_update": "2024-01-10 15:38:53"
                     }
                 },
                 "passenger_IN": {
@@ -53,8 +54,8 @@
                         "sensor_id": "pass_IN_sen_id_s1_1",
                         "unit": "int",
                         "sensor_topic": "smartStation/station_1/passenger_IN/pass_IN_1",
-                        "value": 0,
-                        "last_update": "2024-01-10 12:51:10"
+                        "value": 5,
+                        "last_update": "2024-01-10 15:38:52"
                     }
                 },
                 "passenger_OUT": {
@@ -63,20 +64,20 @@
                         "sensor_id": "pass_OUT_sen_id_s1_1",
                         "unit": "int",
                         "sensor_topic": "smartStation/station_1/passenger_OUT/pass_OUT_1",
-                        "value": 0,
-                        "last_update": "2024-01-10 12:51:10"
+                        "value": 3,
+                        "last_update": "2024-01-10 15:38:52"
                     }
                 }
             },
             "device_status": {
-                "light": "off",
+                "light": "on",
                 "cooler": "off",
                 "heater": "on",
                 "dehumidifier": "off"
             },
             "threshold": {
                 "humidity": 45,
-                "temperature_cold": 23,
+                "temperature_cold": 21,
                 "temperature_hot": 27
             },
             "station_topic": "smartStation/station_1/#",
@@ -107,8 +108,8 @@
                         "sensor_id": "temp_sen_id_s2_1",
                         "unit": "cel",
                         "sensor_topic": "smartStation/station_2/temperature/temp_1",
-                        "value": 4,
-                        "last_update": "2024-01-10 12:31:56"
+                        "value": 5,
+                        "last_update": "2024-01-10 15:38:32"
                     }
                 },
                 "humidity": {
@@ -118,7 +119,7 @@
                         "unit": "%",
                         "sensor_topic": "smartStation/station_2/humidity/humid_1",
                         "value": 33,
-                        "last_update": "2024-01-10 12:31:56"
+                        "last_update": "2024-01-10 15:38:32"
                     }
                 },
                 "motion": {
@@ -128,7 +129,7 @@
                         "unit": "bol",
                         "sensor_topic": "smartStation/station_2/motion/motion_1",
                         "value": 1,
-                        "last_update": "2024-01-10 12:31:56"
+                        "last_update": "2024-01-10 15:38:32"
                     }
                 },
                 "passenger_IN": {
@@ -138,7 +139,7 @@
                         "unit": "int",
                         "sensor_topic": "smartStation/station_2/passenger_IN/pass_IN_1",
                         "value": 0,
-                        "last_update": "2024-01-10 12:31:56"
+                        "last_update": "2024-01-10 15:38:32"
                     }
                 },
                 "passenger_OUT": {
@@ -148,7 +149,7 @@
                         "unit": "int",
                         "sensor_topic": "smartStation/station_2/passenger_OUT/pass_OUT_1",
                         "value": 0,
-                        "last_update": "2024-01-10 12:31:56"
+                        "last_update": "2024-01-10 15:38:32"
                     }
                 }
             },
@@ -159,7 +160,7 @@
                 "dehumidifier": "off"
             },
             "threshold": {
-                "humidity": 35,
+                "humidity": 25,
                 "temperature_cold": 19,
                 "temperature_hot": 27
             },
